@@ -1,0 +1,5 @@
+colorscheme catppuccin_latte
+set number
+set hlsearch
+set laststatus=2
+syntax on

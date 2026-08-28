@@ -1,0 +1,4 @@
+[".vim/colors/catppuccin_latte.vim"]
+type = "file"
+url = "https://raw.githubusercontent.com/catppuccin/vim/main/colors/catppuccin_latte.vim"
+refreshPeriod = "168h"

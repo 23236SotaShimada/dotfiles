@@ -1,0 +1,14 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/sh
+set -eu
+
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+
+brew install \
+  starship \
+  vim
+brew install --cask \
+  font-space-mono-nerd-font \
+  ghostty \
+  zed
+{{ end -}}
