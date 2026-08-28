@@ -1,0 +1,71 @@
+add_newline = false
+
+format = """
+$cmd_duration$directory$git_branch${custom.left_arrorw} $fill ${custom.right_arrorw}$battery$memory_usage$time
+$character
+"""
+
+right_format = """
+$python
+"""
+
+[character]
+success_symbol = "[󰦺](bold fg:white) "
+error_symbol = "[󰧆](bold fg:red) "
+
+[custom.left_arrorw]
+format = "[](bg: white)"
+when = "true"
+
+[custom.right_arrorw]
+format = "[](bg: white)"
+when = "true"
+
+[git_branch]
+style = "bg: white"
+symbol = "󰘬"
+truncation_length = 4
+truncation_symbol = ""
+format = "[](fg:white bg:black)[ $symbol $branch(:$remote_branch) ](fg:white bg:black)[](fg:black bg:white)"
+
+[directory]
+home_symbol = "  "
+read_only = "  "
+style = "bg:white fg:black"
+truncation_length = 6
+truncation_symbol = "../"
+format = '[](fg:black bg:white)[ $path ]($style)'
+
+[directory.substitutions]
+"Desktop" = "  "
+"Documents" = "  "
+"Downloads" = "  "
+"Music" = "  "
+"Pictures" = "  "
+"Videos" = "  "
+
+[cmd_duration]
+min_time = 0
+format = '[  $duration ](bold bg:black fg:white)'
+
+[fill]
+symbol = ' '
+
+[python]
+format = '[ $virtualenv ${version} ](bold fg:white)'
+
+[memory_usage]
+disabled = false
+threshold = -1
+format = '[ 󰍛 $ram  $swap ](bg:white fg:black)[](fg:black bg:white)'
+
+[time]
+disabled = false
+format = '[  $time ](bold bg:black fg:white)'
+time_format = "%T"
+
+[battery]
+format = "[](fg:black bg:white)[ $symbol $percentage ](bg:black fg:white)[](fg:white bg:black)"
+
+[[battery.display]]
+threshold = 20

@@ -1,0 +1,59 @@
+{
+  "buffer_font_family": "SpaceMono Nerd Font Mono",
+  "minimap": {
+    "show": "auto",
+  },
+  "outline_panel": {
+    "dock": "left",
+  },
+  "collaboration_panel": {
+    "dock": "left",
+  },
+  "tab_size": 2,
+  "indent_guides": {
+    "background_coloring": "indent_aware",
+    "coloring": "indent_aware",
+  },
+  "project_panel": {
+    "dock": "left",
+  },
+  "diff_view_style": "unified",
+  "terminal": {
+    "dock": "bottom",
+  },
+  "cli_default_open_behavior": "new_window",
+  "git_panel": {
+    "dock": "left",
+  },
+  "autosave": {
+    "after_delay": {
+      "milliseconds": 1000,
+    },
+  },
+  "ui_font_size": 14.0,
+  "icon_theme": {
+    "mode": "system",
+    "light": "Catppuccin Latte",
+    "dark": "Catppuccin Frappé",
+  },
+  "buffer_font_size": 12.0,
+  "theme": {
+    "mode": "system",
+    "light": "Catppuccin Latte",
+    "dark": "Catppuccin Frappé",
+  },
+  "telemetry": {
+    "diagnostics": true,
+    "metrics": false,
+  },
+  "lsp": {
+    "tailwindcss-language-server": {
+      "settings": {
+        "classFunctions": ["cva", "cx"],
+        "experimental": {
+          "classRegex": ["[cls|className]\\s\\:\\=\\s\"([^\"]*)"],
+        },
+      },
+    },
+  },
+}
