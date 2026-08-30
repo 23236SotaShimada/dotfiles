@@ -74,7 +74,7 @@ monitors_data="$(printf '%s' "$monitors_data" | tr -d '[:space:]')"
 
 case "$monitors_data" in
   *'"name":"special:scratchpad"'*)
-    text="${text}  <span foreground=\"#8839ef\">S</span>"
+    text="${text} <span foreground=\"#8839ef\">S</span>"
     ;;
 esac
 

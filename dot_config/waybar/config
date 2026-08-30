@@ -33,15 +33,15 @@
     "tooltip": false
   },
   "network": {
-    "format-wifi": "󰖩  {essid}",
-    "format-ethernet": "󰈀  {ipaddr}",
+    "format-wifi": "󰖩 {essid}",
+    "format-ethernet": "󰈀",
     "format-disconnected": "󰖪",
     "tooltip-format": "{ifname}: {ipaddr}",
     "on-click": "nm-connection-editor"
   },
   "pulseaudio": {
-    "format": "{icon}  {volume}%",
-    "format-muted": "󰝟  muted",
+    "format": "{icon} {volume}%",
+    "format-muted": "󰝟 muted",
     "format-icons": ["󰕿", "󰖀", "󰕾"],
     "on-click": "hyprpwcenter"
   },
@@ -59,11 +59,11 @@
       "warning": 30,
       "critical": 15
     },
-    "format": "{icon}  {capacity}%",
-    "format-charging": "󰂄  {capacity}%",
+    "format": "{icon} {capacity}%",
+    "format-charging": "󰂄 {capacity}%",
     "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
   },
   "tray": {
-    "spacing": 4
+    "spacing": 12
   }
 }

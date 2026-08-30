@@ -9,7 +9,7 @@
 }
 
 window#waybar {
-  background: alpha(@base, 0.94);
+  background: transparent;
   color: @text;
 }
 
