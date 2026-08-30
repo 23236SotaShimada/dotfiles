@@ -1,0 +1,6 @@
+{{- $keyboardType := "English" -}}
+{{- if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "arch") -}}
+{{-   $keyboardType = promptChoiceOnce . "keyboardType" "Keyboard type" (list "Japanese" "English") "Japanese" -}}
+{{- end -}}
+[data]
+keyboardType = {{ $keyboardType | quote }}

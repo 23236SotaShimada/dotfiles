@@ -1,0 +1,9 @@
+{{- $keyboardType := "Japanese" -}}
+{{- if hasKey . "keyboardType" -}}
+{{-   $keyboardType = index . "keyboardType" -}}
+{{- end -}}
+[Hotkey/ActivateKeys]
+0={{ if eq $keyboardType "Japanese" }}Henkan{{ else }}F14{{ end }}
+
+[Hotkey/DeactivateKeys]
+0={{ if eq $keyboardType "Japanese" }}Muhenkan{{ else }}F13{{ end }}

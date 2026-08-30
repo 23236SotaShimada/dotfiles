@@ -1,0 +1,19 @@
+{{- $keyboardType := "Japanese" -}}
+{{- if hasKey . "keyboardType" -}}
+{{-   $keyboardType = index . "keyboardType" -}}
+{{- end -}}
+[Groups/0]
+Name=Default
+Default Layout={{ if eq $keyboardType "Japanese" }}jp{{ else }}us{{ end }}
+DefaultIM=skk
+
+[Groups/0/Items/0]
+Name=keyboard-{{ if eq $keyboardType "Japanese" }}jp{{ else }}us{{ end }}
+Layout=
+
+[Groups/0/Items/1]
+Name=skk
+Layout=
+
+[GroupOrder]
+0=Default
