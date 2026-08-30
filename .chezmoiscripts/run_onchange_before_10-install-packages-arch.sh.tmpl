@@ -3,6 +3,9 @@
 set -eu
 
 sudo pacman -S --needed --noconfirm \
+  blueman \
+  bluez \
+  bluez-utils \
   btop \
   brightnessctl \
   cliphist \
@@ -57,6 +60,7 @@ if [ "${SHELL:-}" != /usr/bin/zsh ]; then
 fi
 
 sudo systemctl disable getty@tty2.service
+sudo systemctl enable --now bluetooth.service
 sudo systemctl enable ly@tty2.service
 sudo systemctl enable NetworkManager.service
 {{ end -}}

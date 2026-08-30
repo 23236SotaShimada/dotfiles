@@ -21,6 +21,7 @@ window#waybar {
 #custom-media-next,
 #tray,
 #network,
+#bluetooth,
 #pulseaudio,
 #idle_inhibitor,
 #battery,
@@ -38,6 +39,14 @@ window#waybar {
 
 #idle_inhibitor {
   color: @overlay0;
+}
+
+#bluetooth {
+  color: @overlay0;
+}
+
+#bluetooth.connected {
+  color: @mauve;
 }
 
 #idle_inhibitor.activated {

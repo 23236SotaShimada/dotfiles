@@ -5,7 +5,7 @@
   "spacing": 4,
   "modules-left": ["custom/launcher", "custom/workspaces"],
   "modules-center": ["custom/media-previous", "image#media-art", "custom/media-play", "custom/media-next"],
-  "modules-right": ["tray", "network", "pulseaudio", "idle_inhibitor", "battery", "custom/date"],
+  "modules-right": ["tray", "network", "bluetooth", "pulseaudio", "idle_inhibitor", "battery", "custom/date"],
   "custom/launcher": {
     "format": "󰣇",
     "tooltip": false,
@@ -71,6 +71,18 @@
     "format-disconnected": "󰖪",
     "tooltip-format": "{ifname}: {ipaddr}",
     "on-click": "nm-connection-editor"
+  },
+  "bluetooth": {
+    "format": "󰂯",
+    "format-disabled": "󰂲",
+    "format-off": "󰂲",
+    "format-on": "󰂯",
+    "format-connected": "󰂱 {num_connections}",
+    "format-no-controller": "",
+    "tooltip-format": "{controller_alias}: {status}",
+    "tooltip-format-connected": "{controller_alias}: {status}\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}",
+    "on-click": "blueman-manager"
   },
   "pulseaudio": {
     "format": "{icon} {volume}%",
