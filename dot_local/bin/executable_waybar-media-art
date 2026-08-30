@@ -16,9 +16,11 @@ mkdir -p "$cache_directory"
 
 temporary_art=
 temporary_grayscale=
+temporary_render=
 cleanup() {
   [ -z "$temporary_art" ] || rm -f -- "$temporary_art"
   [ -z "$temporary_grayscale" ] || rm -f -- "$temporary_grayscale"
+  [ -z "$temporary_render" ] || rm -f -- "$temporary_render"
 }
 trap cleanup EXIT HUP INT TERM
 
@@ -40,24 +42,83 @@ if [ "$cached_url" != "$art_url" ] || [ ! -s "$art_path" ]; then
   mv -f -- "$temporary_art" "$art_path"
   temporary_art=
   rm -f -- "$grayscale_art_path"
+  find "$cache_directory" -maxdepth 1 -type f -name 'media-art-render-*.png' -delete
   printf '%s\n' "$art_url" > "$url_path"
 fi
 
-if [ "$status" = Playing ]; then
-  printf '%s\n' "$art_path"
-  exit 0
-fi
+source_art_path="$art_path"
+render_state=playing
+if [ "$status" != Playing ]; then
+  render_state=paused
+  if [ ! -s "$grayscale_art_path" ]; then
+    temporary_grayscale="$(mktemp "$cache_directory/media-art-grayscale.XXXXXX")"
+    if magick "$art_path" -colorspace Gray "PNG:$temporary_grayscale"; then
+      mv -f -- "$temporary_grayscale" "$grayscale_art_path"
+      temporary_grayscale=
+    fi
+  fi
 
-if [ ! -s "$grayscale_art_path" ]; then
-  temporary_grayscale="$(mktemp "$cache_directory/media-art-grayscale.XXXXXX")"
-  if magick "$art_path" -colorspace Gray "PNG:$temporary_grayscale"; then
-    mv -f -- "$temporary_grayscale" "$grayscale_art_path"
-    temporary_grayscale=
+  if [ -s "$grayscale_art_path" ]; then
+    source_art_path="$grayscale_art_path"
   fi
 fi
 
-if [ -s "$grayscale_art_path" ]; then
-  printf '%s\n' "$grayscale_art_path"
+position_seconds="$(playerctl --player=playerctld position 2>/dev/null || :)"
+length_microseconds="$(playerctl --player=playerctld metadata mpris:length 2>/dev/null || :)"
+progress_step="$(awk -v position="$position_seconds" -v duration_us="$length_microseconds" '
+  BEGIN {
+    if (duration_us <= 0 || position < 0) {
+      print 0
+      exit
+    }
+
+    progress = position * 1000000 / duration_us
+    if (progress < 0) progress = 0
+    if (progress > 1) progress = 1
+    printf "%d\n", int(progress * 92 + 0.5)
+  }
+')"
+
+art_cache_id="$(printf '%s' "$art_url" | cksum | awk '{ print $1 }')"
+render_path="$cache_directory/media-art-render-v3-${art_cache_id}-${render_state}-${progress_step}.png"
+
+if [ ! -s "$render_path" ]; then
+  temporary_render="$(mktemp "$cache_directory/media-art-render.XXXXXX")"
+
+  if [ "$progress_step" -gt 0 ]; then
+    progress_draw="$(awk -v count="$progress_step" '
+      function emit(x, y) {
+        if (emitted >= count) return
+        if (emitted > 0) printf " "
+        printf "point %d,%d", x, y
+        emitted++
+      }
+
+      BEGIN {
+        for (x = 0; x <= 23; x++) emit(x, 0)
+        for (y = 1; y <= 23; y++) emit(23, y)
+        for (x = 22; x >= 0; x--) emit(x, 23)
+        for (y = 22; y >= 1; y--) emit(0, y)
+      }
+    ')"
+
+    if magick "${source_art_path}[0]" \
+      -auto-orient -resize '24x24^' -gravity center -extent 24x24 \
+      -fill '#8839ef' -stroke none -draw "$progress_draw" \
+      "PNG:$temporary_render"; then
+      mv -f -- "$temporary_render" "$render_path"
+      temporary_render=
+    fi
+  elif magick "${source_art_path}[0]" \
+    -auto-orient -resize '24x24^' -gravity center -extent 24x24 \
+    "PNG:$temporary_render"; then
+    mv -f -- "$temporary_render" "$render_path"
+    temporary_render=
+  fi
+fi
+
+if [ -s "$render_path" ]; then
+  printf '%s\n' "$render_path"
 else
-  printf '%s\n' "$art_path"
+  printf '%s\n' "$source_art_path"
 fi

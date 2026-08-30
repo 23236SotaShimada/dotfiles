@@ -2,7 +2,7 @@ add_newline = true
 palette = "catppuccin_latte"
 
 format = """
-$cmd_duration[](overlay0)$directory$git_branch $fill [](overlay0)$battery$memory_usage$time
+$cmd_duration$directory$git_branch $fill [](overlay0)$battery$memory_usage$time
 $character"""
 
 right_format = """
@@ -20,23 +20,23 @@ truncation_symbol = ""
 format = "[ $symbol $branch(:$remote_branch) ](mauve)[](overlay0)"
 
 [directory]
-home_symbol = "  "
-read_only = "  "
+home_symbol = ""
+read_only = ""
 truncation_length = 6
 truncation_symbol = "../"
 format = "[ $path ](mauve)[](overlay0)"
 
 [directory.substitutions]
-"Desktop" = "  "
-"Documents" = "  "
-"Downloads" = "  "
-"Music" = "  "
-"Pictures" = "  "
-"Videos" = "  "
+"Desktop" = ""
+"Documents" = ""
+"Downloads" = ""
+"Music" = ""
+"Pictures" = ""
+"Videos" = ""
 
 [cmd_duration]
 min_time = 0
-format = "[  $duration ](mauve)"
+format = "[  $duration ](mauve)[](overlay0)"
 
 [fill]
 symbol = " "
