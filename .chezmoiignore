@@ -1,4 +1,5 @@
 README.md
+screen.webp
 
 {{ if not (and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "arch")) }}
 .config/fcitx5
