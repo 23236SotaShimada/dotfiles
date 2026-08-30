@@ -18,6 +18,7 @@ README.md
 .config/waybar
 .config/waybar/**
 .local/bin/clipboard-menu
+.local/bin/configure-thunar-volman
 .local/bin/power-menu
 .local/bin/waybar-date
 .local/bin/waybar-workspaces

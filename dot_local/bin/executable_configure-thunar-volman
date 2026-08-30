@@ -1,0 +1,20 @@
+#!/bin/sh
+set -eu
+
+set_boolean() {
+  channel=$1
+  property=$2
+
+  if xfconf-query --channel "$channel" --property "$property" >/dev/null 2>&1; then
+    xfconf-query --channel "$channel" --property "$property" --set true
+  else
+    xfconf-query --channel "$channel" --property "$property" \
+      --create --type bool --set true
+  fi
+}
+
+command -v xfconf-query >/dev/null 2>&1 || exit 0
+
+set_boolean thunar /misc-volume-management
+set_boolean thunar-volman /automount-drives/enabled
+set_boolean thunar-volman /automount-media/enabled
