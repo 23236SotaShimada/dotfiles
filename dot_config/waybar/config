@@ -4,7 +4,7 @@
   "height": 30,
   "spacing": 4,
   "modules-left": ["custom/launcher", "custom/workspaces"],
-  "modules-center": [],
+  "modules-center": ["custom/media-previous", "image#media-art", "custom/media-play", "custom/media-next"],
   "modules-right": ["tray", "network", "pulseaudio", "idle_inhibitor", "battery", "custom/date"],
   "custom/launcher": {
     "format": "󰣇",
@@ -25,6 +25,39 @@
     "interval": 1,
     "escape": false,
     "tooltip": false
+  },
+  "image#media-art": {
+    "exec": "$HOME/.local/bin/waybar-media-art",
+    "size": 24,
+    "interval": 2,
+    "tooltip": false,
+    "on-click": "playerctl --player=playerctld play-pause"
+  },
+  "custom/media-previous": {
+    "exec": "if playerctl --player=playerctld status >/dev/null 2>&1; then printf '󰒮\\n'; fi",
+    "format": "{}",
+    "interval": 1,
+    "hide-empty-text": true,
+    "tooltip": false,
+    "on-click": "playerctl --player=playerctld previous"
+  },
+  "custom/media-play": {
+    "exec": "status=$(playerctl --player=playerctld status 2>/dev/null || :); [ -n \"$status\" ] || exit 0; art_url=$(playerctl --player=playerctld metadata --format '{{mpris:artUrl}}' 2>/dev/null || :); [ -n \"$art_url\" ] || printf '󰐊\\n'",
+    "format": "{}",
+    "interval": 2,
+    "hide-empty-text": true,
+    "tooltip": false,
+    "on-click": "playerctl --player=playerctld play-pause",
+    "on-click-middle": "playerctl --player=playerctld previous",
+    "on-click-right": "playerctl --player=playerctld next"
+  },
+  "custom/media-next": {
+    "exec": "if playerctl --player=playerctld status >/dev/null 2>&1; then printf '󰒭\\n'; fi",
+    "format": "{}",
+    "interval": 1,
+    "hide-empty-text": true,
+    "tooltip": false,
+    "on-click": "playerctl --player=playerctld next"
   },
   "custom/date": {
     "exec": "$HOME/.local/bin/waybar-date",

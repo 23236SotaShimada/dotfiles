@@ -15,6 +15,10 @@ window#waybar {
 
 #custom-launcher,
 #custom-workspaces,
+#image,
+#custom-media-previous,
+#custom-media-play,
+#custom-media-next,
 #tray,
 #network,
 #pulseaudio,
@@ -26,6 +30,10 @@ window#waybar {
 
 #custom-workspaces {
   color: @overlay0;
+}
+
+#custom-media-play {
+  font-family: "SpaceMono Nerd Font";
 }
 
 #idle_inhibitor {

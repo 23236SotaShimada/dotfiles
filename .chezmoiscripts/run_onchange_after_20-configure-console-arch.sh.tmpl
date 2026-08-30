@@ -1,0 +1,44 @@
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "arch") -}}
+#!/bin/sh
+set -eu
+
+set_vconsole_value() {
+  file=$1
+  key=$2
+  value=$3
+
+  sudo touch "$file"
+  if sudo grep -q "^${key}=" "$file"; then
+    sudo sed -i "s|^${key}=.*|${key}=${value}|" "$file"
+  else
+    printf '%s=%s\n' "$key" "$value" | sudo tee -a "$file" >/dev/null
+  fi
+}
+
+set_ly_value() {
+  file=$1
+  key=$2
+  value=$3
+
+  if sudo grep -Eq "^[[:space:]]*${key}[[:space:]]*=" "$file"; then
+    sudo sed -Ei "s|^[[:space:]]*${key}[[:space:]]*=.*|${key} = ${value}|" "$file"
+  else
+    printf '\n%s = %s\n' "$key" "$value" | sudo tee -a "$file" >/dev/null
+  fi
+}
+
+remove_ly_value() {
+  file=$1
+  key=$2
+
+  sudo sed -Ei "/^[[:space:]]*${key}[[:space:]]*=/d" "$file"
+}
+
+set_vconsole_value /etc/vconsole.conf FONT ter-v28b
+set_ly_value /etc/ly/config.ini clock '%c'
+set_ly_value /etc/ly/config.ini asterisk null
+set_ly_value /etc/ly/config.ini show_password_key null
+set_ly_value /etc/ly/config.ini brightness_down_key null
+set_ly_value /etc/ly/config.ini brightness_up_key null
+remove_ly_value /etc/ly/config.ini corner_top_left
+{{ end -}}

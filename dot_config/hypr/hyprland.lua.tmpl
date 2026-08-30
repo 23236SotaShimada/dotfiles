@@ -129,6 +129,17 @@ hl.config({
     },
 })
 
+hl.window_rule({
+    name = "firefox-pip",
+    match = {
+        class = "^firefox$",
+        title = "^Picture-in-Picture$",
+    },
+    float = true,
+    pin = true,
+    keep_aspect_ratio = true,
+})
+
 hl.monitor({
     output = "",
     mode = "preferred",
@@ -157,6 +168,15 @@ hl.bind(mainMod .. " + ALT + ESCAPE", hl.dsp.exec_cmd("~/.local/bin/power-menu")
 hl.bind(mainMod .. " + CTRL + Q", hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + CTRL + F", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
+hl.bind(mainMod .. " + SHIFT + SPACE", hl.dsp.window.float({ action = "toggle" }))
+hl.bind(mainMod .. " + SHIFT + P", function()
+    if hl.get_active_window() == nil then
+        return
+    end
+
+    hl.dispatch(hl.dsp.window.float({ action = "set" }))
+    hl.dispatch(hl.dsp.window.pin({ action = "toggle" }))
+end)
 hl.bind(mainMod .. " + M", hl.dsp.workspace.toggle_special("scratchpad"))
 hl.bind(mainMod .. " + SHIFT + M", hl.dsp.window.move({ workspace = "special:scratchpad" }))
 

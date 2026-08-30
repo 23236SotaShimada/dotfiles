@@ -1,0 +1,63 @@
+#!/bin/sh
+set -eu
+
+status="$(playerctl --player=playerctld status 2>/dev/null || :)"
+[ -n "$status" ] || exit 0
+
+art_url="$(playerctl --player=playerctld metadata --format '{{mpris:artUrl}}' 2>/dev/null || :)"
+[ -n "$art_url" ] || exit 0
+
+cache_directory="${XDG_CACHE_HOME:-$HOME/.cache}/waybar"
+art_path="$cache_directory/media-art"
+grayscale_art_path="$cache_directory/media-art-grayscale"
+url_path="$cache_directory/media-art.url"
+
+mkdir -p "$cache_directory"
+
+temporary_art=
+temporary_grayscale=
+cleanup() {
+  [ -z "$temporary_art" ] || rm -f -- "$temporary_art"
+  [ -z "$temporary_grayscale" ] || rm -f -- "$temporary_grayscale"
+}
+trap cleanup EXIT HUP INT TERM
+
+cached_url=
+if [ -r "$url_path" ]; then
+  IFS= read -r cached_url < "$url_path" || :
+fi
+
+if [ "$cached_url" != "$art_url" ] || [ ! -s "$art_path" ]; then
+  temporary_art="$(mktemp "$cache_directory/media-art.XXXXXX")"
+  if ! curl --fail --location --silent \
+    --proto '=file,http,https' \
+    --proto-redir '=http,https' \
+    --output "$temporary_art" \
+    "$art_url"; then
+    exit 0
+  fi
+
+  mv -f -- "$temporary_art" "$art_path"
+  temporary_art=
+  rm -f -- "$grayscale_art_path"
+  printf '%s\n' "$art_url" > "$url_path"
+fi
+
+if [ "$status" = Playing ]; then
+  printf '%s\n' "$art_path"
+  exit 0
+fi
+
+if [ ! -s "$grayscale_art_path" ]; then
+  temporary_grayscale="$(mktemp "$cache_directory/media-art-grayscale.XXXXXX")"
+  if magick "$art_path" -colorspace Gray "PNG:$temporary_grayscale"; then
+    mv -f -- "$temporary_grayscale" "$grayscale_art_path"
+    temporary_grayscale=
+  fi
+fi
+
+if [ -s "$grayscale_art_path" ]; then
+  printf '%s\n' "$grayscale_art_path"
+else
+  printf '%s\n' "$art_path"
+fi

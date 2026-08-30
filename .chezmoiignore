@@ -21,6 +21,7 @@ README.md
 .local/bin/configure-thunar-volman
 .local/bin/power-menu
 .local/bin/waybar-date
+.local/bin/waybar-media-art
 .local/bin/waybar-workspaces
 .local/share/fcitx5
 .local/share/fcitx5/**
