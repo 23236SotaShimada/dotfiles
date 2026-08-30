@@ -1,0 +1,81 @@
+#!/bin/sh
+set -eu
+
+workspace_data="$(hyprctl -j activeworkspace 2>/dev/null)" || exit 0
+workspace="$(printf '%s\n' "$workspace_data" | sed -n 's/^[[:space:]]*"id":[[:space:]]*\([0-9][0-9]*\),\{0,1\}[[:space:]]*$/\1/p')"
+[ -n "$workspace" ] || exit 0
+
+workspaces_data="$(hyprctl -j workspaces 2>/dev/null)" || exit 0
+maximum="$(printf '%s\n' "$workspaces_data" | awk '
+  /^[[:space:]]*"id":/ {
+    id = $0
+    gsub(/[^0-9-]/, "", id)
+  }
+  /^[[:space:]]*"windows":/ {
+    windows = $0
+    gsub(/[^0-9]/, "", windows)
+    if (id > 0 && windows > 0 && id > occupied_max) {
+      occupied_max = id
+    }
+  }
+  END {
+    print occupied_max + 1
+  }
+')"
+
+if [ "$workspace" -gt "$maximum" ]; then
+  maximum="$workspace"
+fi
+
+text=
+previous=
+
+append_workspace() {
+  number="$1"
+  focused="$2"
+
+  if [ -n "$previous" ]; then
+    if [ $((number - previous)) -eq 1 ]; then
+      text="${text}･"
+    else
+      text="${text}~"
+    fi
+  fi
+
+  if [ "$focused" = true ]; then
+    text="${text}<span foreground=\"#8839ef\">${number}</span>"
+  else
+    text="${text}${number}"
+  fi
+
+  previous="$number"
+}
+
+if [ "$workspace" -eq 1 ]; then
+  append_workspace 1 true
+else
+  append_workspace 1 false
+fi
+
+if [ "$workspace" -gt 1 ] && [ "$workspace" -lt "$maximum" ]; then
+  append_workspace "$workspace" true
+fi
+
+if [ "$maximum" -gt 1 ]; then
+  if [ "$workspace" -eq "$maximum" ]; then
+    append_workspace "$maximum" true
+  else
+    append_workspace "$maximum" false
+  fi
+fi
+
+monitors_data="$(hyprctl -j monitors 2>/dev/null || :)"
+monitors_data="$(printf '%s' "$monitors_data" | tr -d '[:space:]')"
+
+case "$monitors_data" in
+  *'"name":"special:scratchpad"'*)
+    text="${text}  <span foreground=\"#8839ef\">S</span>"
+    ;;
+esac
+
+printf '%s\n' "$text"

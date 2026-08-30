@@ -1,0 +1,33 @@
+#!/bin/sh
+set -eu
+
+calendar_date="$(date +%Y%m%d)"
+year="$(date +%Y)"
+month="$(date +%m | sed 's/^0//')"
+day="$(date +%d | sed 's/^0//')"
+
+if [ "$calendar_date" -ge 20190501 ]; then
+  era=Reiwa
+  era_year=$((year - 2018))
+elif [ "$calendar_date" -ge 19890108 ]; then
+  era=Heisei
+  era_year=$((year - 1988))
+elif [ "$calendar_date" -ge 19261225 ]; then
+  era=Showa
+  era_year=$((year - 1925))
+else
+  era=Taisho
+  era_year=$((year - 1911))
+fi
+
+case "$(date +%w)" in
+  0) weekday=Sun ;;
+  1) weekday=Mon ;;
+  2) weekday=Tue ;;
+  3) weekday=Wed ;;
+  4) weekday=Thu ;;
+  5) weekday=Fri ;;
+  6) weekday=Sat ;;
+esac
+
+printf '%s %s/%s/%s (%s) %s\n' "$era" "$era_year" "$month" "$day" "$weekday" "$(date +%H:%M)"

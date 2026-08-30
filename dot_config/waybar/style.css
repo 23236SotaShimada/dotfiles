@@ -1,0 +1,73 @@
+@import "latte.css";
+
+* {
+  border: none;
+  border-radius: 0;
+  font-family: "SpaceMono Nerd Font", "Noto Sans Mono CJK JP", "Noto Color Emoji";
+  font-size: 13px;
+  min-height: 0;
+}
+
+window#waybar {
+  background: alpha(@base, 0.94);
+  color: @text;
+}
+
+#custom-launcher,
+#custom-workspaces,
+#tray,
+#network,
+#pulseaudio,
+#idle_inhibitor,
+#battery,
+#custom-date {
+  padding: 0 6px;
+}
+
+#custom-workspaces {
+  color: @overlay0;
+}
+
+#idle_inhibitor {
+  color: @overlay0;
+}
+
+#idle_inhibitor.activated {
+  color: @mauve;
+}
+
+#battery.warning {
+  color: @yellow;
+}
+
+#battery.critical {
+  color: @red;
+}
+
+#custom-launcher {
+  color: @mauve;
+}
+
+menu {
+  background: @base;
+  color: @text;
+  border: 1px solid @mauve;
+  border-radius: 0;
+  padding: 4px;
+}
+
+menuitem {
+  border-radius: 0;
+  padding: 4px 12px;
+}
+
+menuitem:hover {
+  background: @surface0;
+  color: @mauve;
+}
+
+separator {
+  background: @surface2;
+  min-height: 1px;
+  margin: 4px;
+}

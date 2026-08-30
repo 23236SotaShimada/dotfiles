@@ -1,7 +1,8 @@
 add_newline = true
+palette = "catppuccin_latte"
 
 format = """
-$cmd_duration[](none)$directory$git_branch $fill [](none)$battery$memory_usage$time
+$cmd_duration[](overlay0)$directory$git_branch $fill [](overlay0)$battery$memory_usage$time
 $character"""
 
 right_format = """
@@ -9,21 +10,21 @@ $python
 """
 
 [character]
-success_symbol = "[󰁃 ](none)"
-error_symbol = "[󰁜 ](none)"
+success_symbol = "[󰁃 ](mauve)"
+error_symbol = "[󰁜 ](red)"
 
 [git_branch]
 symbol = "󰘬"
 truncation_length = 4
 truncation_symbol = ""
-format = "[ $symbol $branch(:$remote_branch) ](none)"
+format = "[ $symbol $branch(:$remote_branch) ](mauve)[](overlay0)"
 
 [directory]
 home_symbol = "  "
 read_only = "  "
 truncation_length = 6
 truncation_symbol = "../"
-format = "[ $path ](none)"
+format = "[ $path ](mauve)[](overlay0)"
 
 [directory.substitutions]
 "Desktop" = "  "
@@ -35,17 +36,17 @@ format = "[ $path ](none)"
 
 [cmd_duration]
 min_time = 0
-format = "[  $duration ](none)"
+format = "[  $duration ](mauve)"
 
 [fill]
 symbol = " "
 style = "none"
 
 [python]
-format = "[ $virtualenv ${version} ](none)"
+format = "[ $virtualenv ${version} ](mauve)"
 
 [battery]
-format = "[ $symbol $percentage ](none)"
+format = "[ $symbol $percentage ](green)[](overlay0)"
 
 [[battery.display]]
 threshold = 20
@@ -54,9 +55,38 @@ style = "none"
 [memory_usage]
 disabled = false
 threshold = -1
-format = "[ 󰍛 $ram  $swap ](none)"
+format = "[ 󰍛 $ram  $swap ](mauve)[](overlay0)"
 
 [time]
 disabled = false
 time_format = "%T"
-format = "[  $time ](none)"
+format = "[  $time ](mauve)"
+
+# Catppuccin Starship port: themes/latte.toml
+[palettes.catppuccin_latte]
+rosewater = "#dc8a78"
+flamingo = "#dd7878"
+pink = "#ea76cb"
+mauve = "#8839ef"
+red = "#d20f39"
+maroon = "#e64553"
+peach = "#fe640b"
+yellow = "#df8e1d"
+green = "#40a02b"
+teal = "#179299"
+sky = "#04a5e5"
+sapphire = "#209fb5"
+blue = "#1e66f5"
+lavender = "#7287fd"
+text = "#4c4f69"
+subtext1 = "#5c5f77"
+subtext0 = "#6c6f85"
+overlay2 = "#7c7f93"
+overlay1 = "#8c8fa1"
+overlay0 = "#9ca0b0"
+surface2 = "#acb0be"
+surface1 = "#bcc0cc"
+surface0 = "#ccd0da"
+base = "#eff1f5"
+mantle = "#e6e9ef"
+crust = "#dce0e8"

@@ -12,12 +12,14 @@
     "prisma": true,
     "fish": true,
     "templ": true,
+    "xml": true,
   },
   "agent": {
     "sidebar_side": "right",
     "dock": "right",
   },
   "buffer_font_family": "SpaceMono Nerd Font Mono",
+  "buffer_font_fallbacks": ["Noto Sans Mono CJK JP", "Noto Color Emoji"],
   "minimap": {
     "show": "auto",
   },
@@ -38,6 +40,8 @@
   "diff_view_style": "unified",
   "terminal": {
     "dock": "bottom",
+    "font_family": "SpaceMono Nerd Font Mono",
+    "font_fallbacks": ["Noto Sans Mono CJK JP", "Noto Color Emoji"],
     "line_height": "standard",
   },
   "cli_default_open_behavior": "new_window",
@@ -49,6 +53,8 @@
       "milliseconds": 1000,
     },
   },
+  "ui_font_family": "SpaceMono Nerd Font",
+  "ui_font_fallbacks": ["Noto Sans Mono CJK JP", "Noto Color Emoji"],
   "ui_font_size": 14.0,
   "icon_theme": {
     "mode": "system",

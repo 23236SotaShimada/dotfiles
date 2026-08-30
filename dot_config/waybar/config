@@ -1,0 +1,69 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 30,
+  "spacing": 4,
+  "modules-left": ["custom/launcher", "custom/workspaces"],
+  "modules-center": [],
+  "modules-right": ["tray", "network", "pulseaudio", "idle_inhibitor", "battery", "custom/date"],
+  "custom/launcher": {
+    "format": "󰣇",
+    "tooltip": false,
+    "menu": "on-click",
+    "menu-file": "$HOME/.config/waybar/power-menu.xml",
+    "menu-actions": {
+      "lock": "$HOME/.local/bin/power-menu lock",
+      "suspend": "$HOME/.local/bin/power-menu suspend",
+      "logout": "$HOME/.local/bin/power-menu logout",
+      "reboot": "$HOME/.local/bin/power-menu reboot",
+      "poweroff": "$HOME/.local/bin/power-menu poweroff"
+    }
+  },
+  "custom/workspaces": {
+    "exec": "$HOME/.local/bin/waybar-workspaces",
+    "format": "{}",
+    "interval": 1,
+    "escape": false,
+    "tooltip": false
+  },
+  "custom/date": {
+    "exec": "$HOME/.local/bin/waybar-date",
+    "format": "{}",
+    "interval": 30,
+    "tooltip": false
+  },
+  "network": {
+    "format-wifi": "󰖩  {essid}",
+    "format-ethernet": "󰈀  {ipaddr}",
+    "format-disconnected": "󰖪",
+    "tooltip-format": "{ifname}: {ipaddr}",
+    "on-click": "nm-connection-editor"
+  },
+  "pulseaudio": {
+    "format": "{icon}  {volume}%",
+    "format-muted": "󰝟  muted",
+    "format-icons": ["󰕿", "󰖀", "󰕾"],
+    "on-click": "hyprpwcenter"
+  },
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "",
+      "deactivated": ""
+    },
+    "tooltip-format-activated": "enable",
+    "tooltip-format-deactivated": "disable"
+  },
+  "battery": {
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon}  {capacity}%",
+    "format-charging": "󰂄  {capacity}%",
+    "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+  },
+  "tray": {
+    "spacing": 4
+  }
+}

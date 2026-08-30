@@ -1,0 +1,15 @@
+font-family = SpaceMono Nerd Font
+font-family = Noto Sans Mono CJK JP
+font-family = Noto Color Emoji
+theme = catppuccin-latte.conf
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "arch") -}}
+font-size = 12
+keybind = ctrl+shift+a=select_all
+keybind = ctrl+shift+c=copy_to_clipboard
+keybind = ctrl+shift+f=start_search
+keybind = ctrl+shift+k=clear_screen
+keybind = ctrl+shift+n=new_window
+keybind = ctrl+shift+t=new_tab
+keybind = ctrl+shift+v=paste_from_clipboard
+keybind = ctrl+shift+w=close_surface
+{{ end -}}

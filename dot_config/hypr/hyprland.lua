@@ -1,0 +1,242 @@
+local colors = require("themes.catppuccin-latte")
+local dynamicWorkspaces = require("dynamic_workspaces")
+
+local mainMod = "SUPER" -- Command
+local terminal = "ghostty"
+local menu = "fuzzel"
+local fileManager = "thunar"
+
+local function isGhostty(window)
+    return window ~= nil and string.find(string.lower(window.class), "ghostty", 1, true) ~= nil
+end
+
+local function sendShortcut(window, mods, key)
+    hl.dispatch(hl.dsp.send_key_state({
+        mods = mods,
+        key = key,
+        state = "down",
+        window = window,
+    }))
+    hl.dispatch(hl.dsp.send_key_state({
+        mods = mods,
+        key = key,
+        state = "up",
+        window = window,
+    }))
+end
+
+local function bindCommand(input, output, options)
+    options = options or {}
+
+    hl.bind(mainMod .. " + " .. input, function()
+        local window = hl.get_active_window()
+        if window == nil then
+            return
+        end
+
+        if isGhostty(window) then
+            if options.ghostty == nil then
+                return
+            end
+            sendShortcut(window, options.ghostty.mods, options.ghostty.key or output)
+            return
+        end
+
+        sendShortcut(window, options.mods or "CTRL", output)
+    end)
+end
+
+local function bindOption(input, output)
+    hl.bind("ALT + " .. input, function()
+        local window = hl.get_active_window()
+        if window ~= nil then
+            sendShortcut(window, "CTRL", output)
+        end
+    end, { repeating = true })
+end
+
+local function bindEmacs(input, output, mods)
+    hl.bind("CTRL + " .. input, function()
+        local window = hl.get_active_window()
+        if window == nil then
+            return
+        end
+
+        if isGhostty(window) then
+            sendShortcut(window, "CTRL", input)
+            return
+        end
+
+        sendShortcut(window, mods or "", output)
+    end, { repeating = true })
+end
+
+hl.env("XMODIFIERS", "@im=fcitx")
+hl.env("QT_IM_MODULES", "wayland;fcitx;ibus")
+hl.env("HYPRCURSOR_THEME", "catppuccin-latte-light-cursors")
+hl.env("HYPRCURSOR_SIZE", "24")
+hl.env("XCURSOR_THEME", "catppuccin-latte-light-cursors")
+hl.env("XCURSOR_SIZE", "24")
+
+hl.on("hyprland.start", function()
+    hl.exec_cmd("mako")
+    hl.exec_cmd("waybar")
+    hl.exec_cmd("hypridle")
+    hl.exec_cmd("fcitx5 -d")
+    hl.exec_cmd("wl-paste --type text --watch cliphist store")
+    hl.exec_cmd("wl-paste --type image --watch cliphist store")
+end)
+
+hl.config({
+    input = {
+        follow_mouse = 1,
+        kb_options = "ctrl:nocaps",
+    },
+    general = {
+        gaps_in = 5,
+        gaps_out = {
+            top = 0,
+            left = 10,
+            right = 10,
+            bottom = 10,
+        },
+        border_size = 1,
+        col = {
+            active_border = colors.mauve,
+            inactive_border = colors.surface2,
+        },
+        layout = "dwindle",
+    },
+    decoration = {
+        rounding = 0,
+        shadow = {
+            enabled = false,
+        },
+    },
+    animations = {
+        enabled = true,
+    },
+    misc = {
+        disable_hyprland_logo = true,
+        disable_splash_rendering = true,
+        background_color = colors.base,
+    },
+})
+
+hl.monitor({
+    output = "",
+    mode = "preferred",
+    position = "auto",
+    scale = 1,
+})
+
+hl.animation({ leaf = "global", enabled = true, speed = 2.5, bezier = "default" })
+hl.animation({ leaf = "windows", enabled = false })
+hl.animation({ leaf = "specialWorkspace", enabled = true, speed = 2.5, bezier = "default", style = "slidevert" })
+
+hl.bind(mainMod .. " + RETURN", hl.dsp.exec_cmd(terminal))
+hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd(menu))
+hl.bind(mainMod .. " + ALT + SPACE", hl.dsp.exec_cmd(fileManager))
+hl.bind(mainMod .. " + SHIFT + V", hl.dsp.exec_cmd("~/.local/bin/clipboard-menu"))
+hl.bind(mainMod .. " + ALT + ESCAPE", hl.dsp.exec_cmd("~/.local/bin/power-menu"))
+hl.bind(mainMod .. " + CTRL + Q", hl.dsp.exec_cmd("hyprlock"))
+hl.bind(mainMod .. " + Q", hl.dsp.window.close())
+hl.bind(mainMod .. " + CTRL + F", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
+hl.bind(mainMod .. " + M", hl.dsp.workspace.toggle_special("scratchpad"))
+hl.bind(mainMod .. " + SHIFT + M", hl.dsp.window.move({ workspace = "special:scratchpad" }))
+
+hl.bind(mainMod .. " + TAB", function()
+    hl.dispatch(hl.dsp.window.cycle_next())
+    hl.dispatch(hl.dsp.window.alter_zorder({ mode = "top" }))
+end)
+hl.bind(mainMod .. " + SHIFT + TAB", function()
+    hl.dispatch(hl.dsp.window.cycle_next({ next = false }))
+    hl.dispatch(hl.dsp.window.alter_zorder({ mode = "top" }))
+end)
+
+hl.bind("CTRL + LEFT", dynamicWorkspaces.focus_previous)
+hl.bind("CTRL + RIGHT", dynamicWorkspaces.focus_next)
+
+bindCommand("A", "A", { ghostty = { mods = "CTRL SHIFT" } })
+bindCommand("B", "B")
+bindCommand("C", "C", { ghostty = { mods = "CTRL SHIFT" } })
+bindCommand("D", "D")
+bindCommand("F", "F", { ghostty = { mods = "CTRL SHIFT" } })
+bindCommand("I", "I")
+bindCommand("K", "K", { ghostty = { mods = "CTRL SHIFT" } })
+bindCommand("L", "L")
+bindCommand("N", "N", { ghostty = { mods = "CTRL SHIFT" } })
+bindCommand("O", "O")
+bindCommand("P", "P")
+bindCommand("R", "R")
+bindCommand("S", "S")
+bindCommand("T", "T", { ghostty = { mods = "CTRL SHIFT" } })
+bindCommand("U", "U")
+bindCommand("V", "V", { ghostty = { mods = "CTRL SHIFT" } })
+bindCommand("W", "W", { ghostty = { mods = "CTRL SHIFT" } })
+bindCommand("X", "X")
+bindCommand("Y", "Y")
+bindCommand("Z", "Z")
+bindCommand("LEFT", "HOME", { mods = "", ghostty = { mods = "" } })
+bindCommand("RIGHT", "END", { mods = "", ghostty = { mods = "" } })
+bindCommand("UP", "HOME", { mods = "CTRL" })
+bindCommand("DOWN", "END", { mods = "CTRL" })
+bindCommand("SHIFT + N", "N", { mods = "CTRL SHIFT" })
+bindCommand("SHIFT + O", "O", { mods = "CTRL SHIFT" })
+bindCommand("SHIFT + S", "S", { mods = "CTRL SHIFT" })
+bindCommand("SHIFT + T", "T", { mods = "CTRL SHIFT" })
+bindCommand("SHIFT + W", "W", { mods = "CTRL SHIFT" })
+bindCommand("SHIFT + Z", "Z", { mods = "CTRL SHIFT" })
+
+bindOption("LEFT", "LEFT")
+bindOption("RIGHT", "RIGHT")
+bindOption("BACKSPACE", "BACKSPACE")
+
+bindEmacs("A", "HOME")
+bindEmacs("E", "END")
+bindEmacs("B", "LEFT")
+bindEmacs("F", "RIGHT")
+bindEmacs("P", "UP")
+bindEmacs("N", "DOWN")
+bindEmacs("D", "DELETE")
+bindEmacs("H", "BACKSPACE")
+
+hl.bind("CTRL + K", function()
+    local window = hl.get_active_window()
+    if window == nil then
+        return
+    end
+
+    if isGhostty(window) then
+        sendShortcut(window, "CTRL", "K")
+        return
+    end
+
+    sendShortcut(window, "SHIFT", "END")
+    sendShortcut(window, "", "BACKSPACE")
+end)
+
+hl.bind("ALT + B", function()
+    local window = hl.get_active_window()
+    if window ~= nil then
+        sendShortcut(window, isGhostty(window) and "ALT" or "CTRL", isGhostty(window) and "B" or "LEFT")
+    end
+end, { repeating = true })
+
+hl.bind("ALT + F", function()
+    local window = hl.get_active_window()
+    if window ~= nil then
+        sendShortcut(window, isGhostty(window) and "ALT" or "CTRL", isGhostty(window) and "F" or "RIGHT")
+    end
+end, { repeating = true })
+
+hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
+hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
+
+for workspace = 1, 9 do
+    hl.bind(mainMod .. " + " .. workspace, hl.dsp.focus({ workspace = workspace }))
+    hl.bind(mainMod .. " + SHIFT + " .. workspace, hl.dsp.window.move({ workspace = workspace }))
+end
+
+hl.bind(mainMod .. " + 0", hl.dsp.focus({ workspace = 10 }))
+hl.bind(mainMod .. " + SHIFT + 0", hl.dsp.window.move({ workspace = 10 }))

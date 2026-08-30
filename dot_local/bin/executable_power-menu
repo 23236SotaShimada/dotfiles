@@ -1,0 +1,30 @@
+#!/bin/sh
+set -eu
+
+choice="${1:-}"
+
+if [ -z "$choice" ]; then
+  choice="$(printf '%s\n' 'Lock' 'Suspend' 'Log out' 'Reboot' 'Power off' | fuzzel --dmenu --prompt='Power> ')" || exit 0
+fi
+
+case "$choice" in
+  lock|'Lock')
+    hyprlock
+    ;;
+  suspend|'Suspend')
+    systemctl suspend
+    ;;
+  logout|'Log out')
+    if command -v hyprshutdown >/dev/null 2>&1; then
+      hyprshutdown
+    else
+      hyprctl dispatch 'hl.dsp.exit()'
+    fi
+    ;;
+  reboot|'Reboot')
+    systemctl reboot
+    ;;
+  poweroff|'Power off')
+    systemctl poweroff
+    ;;
+esac

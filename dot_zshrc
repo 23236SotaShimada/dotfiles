@@ -1,0 +1,74 @@
+setopt auto_cd
+setopt extended_history
+setopt hist_expire_dups_first
+setopt hist_ignore_all_dups
+setopt hist_ignore_space
+setopt interactive_comments
+setopt share_history
+
+HISTFILE=${XDG_STATE_HOME:-$HOME/.local/state}/zsh/history
+HISTSIZE=100000
+SAVEHIST=100000
+mkdir -p "${HISTFILE:h}"
+
+if (( $+commands[brew] )); then
+  typeset -g HOMEBREW_PREFIX=${HOMEBREW_PREFIX:-$(brew --prefix)}
+  fpath=("$HOMEBREW_PREFIX/share/zsh-completions" $fpath)
+fi
+
+[[ -d /usr/share/zsh/site-functions ]] && fpath=(/usr/share/zsh/site-functions $fpath)
+
+autoload -Uz compinit
+typeset zcompdump_dir=${XDG_CACHE_HOME:-$HOME/.cache}/zsh
+mkdir -p "$zcompdump_dir"
+compinit -d "$zcompdump_dir/zcompdump-$ZSH_VERSION"
+unset zcompdump_dir
+
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*' use-cache true
+zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/completion"
+
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#9ca0b0'
+
+function source_first_readable() {
+  local plugin
+  for plugin in "$@"; do
+    if [[ -r $plugin ]]; then
+      source "$plugin"
+      return 0
+    fi
+  done
+  return 1
+}
+
+source_first_readable \
+  "${HOMEBREW_PREFIX:-}/share/zsh-autosuggestions/zsh-autosuggestions.zsh" \
+  /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+unfunction source_first_readable
+
+if (( $+commands[starship] )); then
+  eval "$(starship init zsh)"
+fi
+
+typeset -gA ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[default]='fg=#4c4f69'
+ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=#d20f39'
+ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=#8839ef'
+ZSH_HIGHLIGHT_STYLES[alias]='fg=#1e66f5'
+ZSH_HIGHLIGHT_STYLES[builtin]='fg=#1e66f5'
+ZSH_HIGHLIGHT_STYLES[function]='fg=#1e66f5'
+ZSH_HIGHLIGHT_STYLES[command]='fg=#40a02b'
+ZSH_HIGHLIGHT_STYLES[precommand]='fg=#fe640b'
+ZSH_HIGHLIGHT_STYLES[path]='fg=#179299,underline'
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=#df8e1d'
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=#df8e1d'
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=#40a02b'
+ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=#40a02b'
+
+if [[ -r ${HOMEBREW_PREFIX:-}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
+  source "${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+elif [[ -r /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
+  source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi

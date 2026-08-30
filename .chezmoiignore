@@ -1,1 +1,28 @@
 README.md
+
+{{ if not (and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "arch")) }}
+.config/fcitx5
+.config/fcitx5/**
+.config/fuzzel
+.config/fuzzel/**
+.config/fontconfig
+.config/fontconfig/**
+.config/gtk-3.0
+.config/gtk-3.0/**
+.config/gtk-4.0
+.config/gtk-4.0/**
+.config/hypr
+.config/hypr/**
+.config/mako
+.config/mako/**
+.config/waybar
+.config/waybar/**
+.local/bin/clipboard-menu
+.local/bin/power-menu
+.local/bin/waybar-date
+.local/bin/waybar-workspaces
+.local/share/fcitx5
+.local/share/fcitx5/**
+.local/share/themes/catppuccin-latte-mauve-standard+default
+.local/share/themes/catppuccin-latte-mauve-standard+default/**
+{{ end }}

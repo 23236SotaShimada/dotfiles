@@ -2,3 +2,68 @@
 type = "file"
 url = "https://raw.githubusercontent.com/catppuccin/vim/main/colors/catppuccin_latte.vim"
 refreshPeriod = "168h"
+
+[".config/ghostty/themes/catppuccin-latte.conf"]
+type = "file"
+url = "https://raw.githubusercontent.com/catppuccin/ghostty/main/themes/catppuccin-latte.conf"
+refreshPeriod = "168h"
+
+[".config/btop/themes/catppuccin_latte.theme"]
+type = "file"
+url = "https://raw.githubusercontent.com/catppuccin/btop/main/themes/catppuccin_latte.theme"
+refreshPeriod = "168h"
+
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "arch") -}}
+[".config/fuzzel/themes/catppuccin-latte-mauve.ini"]
+type = "file"
+url = "https://raw.githubusercontent.com/catppuccin/fuzzel/main/themes/catppuccin-latte/mauve.ini"
+refreshPeriod = "168h"
+
+[".config/waybar/latte.css"]
+type = "file"
+url = "https://raw.githubusercontent.com/catppuccin/waybar/main/themes/latte.css"
+refreshPeriod = "168h"
+
+[".config/mako/themes/catppuccin-latte-mauve"]
+type = "file"
+url = "https://raw.githubusercontent.com/catppuccin/mako/main/themes/catppuccin-latte/catppuccin-latte-mauve"
+refreshPeriod = "168h"
+
+[".config/hypr/themes/catppuccin-latte.lua"]
+type = "file"
+url = "https://raw.githubusercontent.com/catppuccin/hyprland/main/themes/catppuccin-latte.lua"
+refreshPeriod = "168h"
+
+[".config/hypr/themes/catppuccin-latte.conf"]
+type = "file"
+url = "https://raw.githubusercontent.com/catppuccin/hyprlock/main/themes/latte.conf"
+refreshPeriod = "168h"
+
+[".config/hypr/themes/catppuccin-latte-mauve-hyprtoolkit.conf"]
+type = "file"
+url = "https://raw.githubusercontent.com/catppuccin/hyprtoolkit/main/themes/latte/catppuccin-latte-mauve.conf"
+refreshPeriod = "168h"
+
+[".local/share/icons/catppuccin-latte-light-cursors"]
+type = "archive"
+url = "https://github.com/catppuccin/cursors/releases/download/v2.0.0/catppuccin-latte-light-cursors.zip"
+stripComponents = 1
+refreshPeriod = "672h"
+checksum.sha256 = "4c0752cfa2da6c4cbcfe9539ca92585144b34651f22acf6cecf18850cb938880"
+
+[".local/share/fcitx5/themes/catppuccin-latte-mauve/arrow.png"]
+type = "file"
+url = "https://raw.githubusercontent.com/catppuccin/fcitx5/main/src/catppuccin-latte-mauve/arrow.png"
+refreshPeriod = "168h"
+
+[".local/share/fcitx5/themes/catppuccin-latte-mauve/radio.png"]
+type = "file"
+url = "https://raw.githubusercontent.com/catppuccin/fcitx5/main/src/catppuccin-latte-mauve/radio.png"
+refreshPeriod = "168h"
+
+[".local/share/themes"]
+type = "archive"
+url = "https://github.com/catppuccin/gtk/releases/download/v1.0.3/catppuccin-latte-mauve-standard%2Bdefault.zip"
+refreshPeriod = "672h"
+checksum.sha256 = "b19da9e3048dc9357a3e55f2592a4e006aaf5654ff228f846d7b21adf7c3273e"
+{{ end -}}
