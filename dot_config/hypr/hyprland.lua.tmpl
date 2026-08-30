@@ -96,7 +96,7 @@ hl.config({
     input = {
         follow_mouse = 1,
         kb_layout = "{{ if eq $keyboardType "Japanese" }}jp{{ else }}us{{ end }}",
-        kb_options = "ctrl:nocaps",
+        kb_options = "ctrl:nocaps,altwin:swap_lalt_lwin",
     },
     general = {
         gaps_in = 5,
@@ -159,6 +159,24 @@ hl.bind("XF86Tools", hl.dsp.exec_cmd("fcitx5-remote -c"))
 hl.bind("XF86Launch5", hl.dsp.exec_cmd("fcitx5-remote -o"))
 hl.bind("code:191", hl.dsp.exec_cmd("fcitx5-remote -c"))
 hl.bind("code:192", hl.dsp.exec_cmd("fcitx5-remote -o"))
+
+hl.bind("F1", hl.dsp.exec_cmd("brightnessctl -q set 10%-"), { repeating = true })
+hl.bind("F2", hl.dsp.exec_cmd("brightnessctl -q set +10%"), { repeating = true })
+hl.bind("F3", function() end)
+hl.bind("F4", hl.dsp.exec_cmd(menu))
+hl.bind("F5", function() end)
+hl.bind("F6", function() end)
+hl.bind("F7", hl.dsp.exec_cmd("playerctl --player=playerctld previous"))
+hl.bind("F8", hl.dsp.exec_cmd("playerctl --player=playerctld play-pause"))
+hl.bind("F9", hl.dsp.exec_cmd("playerctl --player=playerctld next"))
+hl.bind("F10", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"))
+hl.bind("F11", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), { repeating = true })
+hl.bind("F12", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { repeating = true })
+
+hl.bind("Menu", hl.dsp.submap("function-keys"))
+hl.define_submap("function-keys", function()
+    hl.bind("Menu", hl.dsp.submap("reset"), { release = true, submap_universal = true })
+end)
 
 hl.bind(mainMod .. " + RETURN", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd(menu))
