@@ -1,0 +1,41 @@
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "arch") -}}
+#!/bin/sh
+set -eu
+
+source_root=/usr/share/icons/breeze
+theme_root="${XDG_DATA_HOME:-$HOME/.local/share}/icons/breeze-mauve"
+
+[ -d "$source_root" ] || exit 0
+[ -f "$theme_root/index.theme" ] || exit 0
+
+for size in 16 22 32 48 64 96; do
+  source_directory="$source_root/places/$size"
+  target_directory="$theme_root/$size/places"
+
+  [ -d "$source_directory" ] || continue
+  mkdir -p "$target_directory"
+  find "$target_directory" -maxdepth 1 -type f -name 'folder*.svg' -delete
+
+  find -L "$source_directory" -maxdepth 1 -type f -name 'folder*.svg' -print |
+    while IFS= read -r source_icon; do
+      target_icon="$target_directory/$(basename "$source_icon")"
+
+      case "$size" in
+        16|22)
+          if grep -q 'color:#232629' "$source_icon"; then
+            sed 's/color:#232629/color:#8839ef/g' "$source_icon" > "$target_icon"
+          fi
+          ;;
+        *)
+          if grep -q 'color:#3daee9' "$source_icon"; then
+            sed 's/color:#3daee9/color:#8839ef/g' "$source_icon" > "$target_icon"
+          fi
+          ;;
+      esac
+    done
+done
+
+if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+  gtk-update-icon-cache --force --ignore-theme-index "$theme_root" >/dev/null
+fi
+{{ end -}}

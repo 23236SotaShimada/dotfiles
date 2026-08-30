@@ -27,6 +27,8 @@ screen.webp
 .local/bin/waybar-workspaces
 .local/share/fcitx5
 .local/share/fcitx5/**
+.local/share/icons/breeze-mauve
+.local/share/icons/breeze-mauve/**
 .local/share/themes/catppuccin-latte-mauve-standard+default
 .local/share/themes/catppuccin-latte-mauve-standard+default/**
 {{ end }}

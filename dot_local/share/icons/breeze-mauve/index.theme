@@ -1,0 +1,35 @@
+[Icon Theme]
+Name=Breeze Mauve
+Comment=Breeze with Catppuccin Latte Mauve folder accents
+Inherits=breeze,hicolor
+Directories=16/places,22/places,32/places,48/places,64/places,96/places
+
+[16/places]
+Size=16
+Context=Places
+Type=Fixed
+
+[22/places]
+Size=22
+Context=Places
+Type=Fixed
+
+[32/places]
+Size=32
+Context=Places
+Type=Fixed
+
+[48/places]
+Size=48
+Context=Places
+Type=Fixed
+
+[64/places]
+Size=64
+Context=Places
+Type=Fixed
+
+[96/places]
+Size=96
+Context=Places
+Type=Fixed

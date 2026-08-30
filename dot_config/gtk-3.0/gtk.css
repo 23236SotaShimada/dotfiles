@@ -1,3 +1,11 @@
 * {
   border-radius: 0;
 }
+
+.thunar .standard-view .view:selected,
+.thunar .standard-view .view:selected:focus,
+.thunar .standard-view .view:selected:hover,
+.thunar .standard-view .view:selected:focus:hover {
+  background-color: alpha(@theme_selected_bg_color, 0.18);
+  color: @theme_fg_color;
+}

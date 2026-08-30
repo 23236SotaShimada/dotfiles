@@ -4,6 +4,7 @@ set -eu
 
 if command -v gsettings >/dev/null 2>&1; then
   gsettings set org.gnome.desktop.interface gtk-theme 'catppuccin-latte-mauve-standard+default'
+  gsettings set org.gnome.desktop.interface icon-theme 'breeze-mauve'
   gsettings set org.gnome.desktop.interface font-name 'SpaceMono Nerd Font 11'
 fi
 {{ end -}}
