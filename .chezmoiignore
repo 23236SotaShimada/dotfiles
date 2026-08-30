@@ -20,6 +20,7 @@ README.md
 .local/bin/clipboard-menu
 .local/bin/configure-thunar-volman
 .local/bin/power-menu
+.local/bin/screenshot-to-clipboard
 .local/bin/waybar-date
 .local/bin/waybar-media-art
 .local/bin/waybar-workspaces
