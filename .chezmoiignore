@@ -16,6 +16,12 @@ screen.webp
 .config/hypr/**
 .config/mako
 .config/mako/**
+.config/qt
+.config/qt/**
+.config/qt5ct
+.config/qt5ct/**
+.config/qt6ct
+.config/qt6ct/**
 .config/waybar
 .config/waybar/**
 .local/bin/clipboard-menu

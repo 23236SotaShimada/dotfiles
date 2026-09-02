@@ -66,4 +66,9 @@ type = "archive"
 url = "https://github.com/catppuccin/gtk/releases/download/v1.0.3/catppuccin-latte-mauve-standard%2Bdefault.zip"
 refreshPeriod = "672h"
 checksum.sha256 = "b19da9e3048dc9357a3e55f2592a4e006aaf5654ff228f846d7b21adf7c3273e"
+
+[".config/qt/themes/catppuccin-latte-mauve.conf"]
+type = "file"
+url = "https://raw.githubusercontent.com/catppuccin/qt5ct/main/themes/catppuccin-latte-mauve.conf"
+refreshPeriod = "168h"
 {{ end -}}
