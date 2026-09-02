@@ -2,8 +2,19 @@
 {{- if hasKey . "keyboardType" -}}
 {{-   $keyboardType = index . "keyboardType" -}}
 {{- end -}}
+[Hotkey/TriggerKeys]
+
+[Hotkey/AltTriggerKeys]
+
+[Hotkey/EnumerateGroupForwardKeys]
+
+[Hotkey/EnumerateGroupBackwardKeys]
+
 [Hotkey/ActivateKeys]
 0={{ if eq $keyboardType "Japanese" }}Henkan{{ else }}F14{{ end }}
+{{ if eq $keyboardType "Japanese" -}}
+1=Hiragana_Katakana
+{{ end }}
 
 [Hotkey/DeactivateKeys]
 0={{ if eq $keyboardType "Japanese" }}Muhenkan{{ else }}F13{{ end }}
