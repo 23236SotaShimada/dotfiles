@@ -2,7 +2,7 @@ add_newline = true
 palette = "catppuccin_latte"
 
 format = """
-$cmd_duration$directory$git_branch $fill [](overlay0)$battery$memory_usage$time
+$hostname$directory$git_branch $fill [](overlay0)$battery$memory_usage$time$cmd_duration
 $character"""
 
 right_format = """
@@ -12,6 +12,11 @@ $python
 [character]
 success_symbol = "[󰁃 ](mauve)"
 error_symbol = "[󰁜 ](red)"
+
+[hostname]
+ssh_only = true
+ssh_symbol = ""
+format = "[ $ssh_symbol $hostname ](mauve)[](overlay0)"
 
 [git_branch]
 symbol = "󰘬"
@@ -36,7 +41,7 @@ format = "[ $path ](mauve)[](overlay0)"
 
 [cmd_duration]
 min_time = 0
-format = "[  $duration ](mauve)[](overlay0)"
+format = "[](overlay0)[  $duration ](mauve)"
 
 [fill]
 symbol = " "
