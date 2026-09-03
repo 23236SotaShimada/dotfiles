@@ -78,6 +78,7 @@ end
 hl.env("XMODIFIERS", "@im=fcitx")
 hl.env("QT_IM_MODULES", "wayland;fcitx;ibus")
 hl.env("QT_QPA_PLATFORMTHEME", "qt5ct")
+hl.env("BROWSER", "firefox")
 hl.env("HYPRCURSOR_THEME", "catppuccin-latte-light-cursors")
 hl.env("HYPRCURSOR_SIZE", "24")
 hl.env("XCURSOR_THEME", "catppuccin-latte-light-cursors")
@@ -182,6 +183,26 @@ hl.bind("F9", hl.dsp.exec_cmd("playerctl --player=playerctld next"))
 hl.bind("F10", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"))
 hl.bind("F11", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), { repeating = true })
 hl.bind("F12", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { repeating = true })
+
+local mediaBindOptions = {
+    submap_universal = true,
+    dont_inhibit = true,
+    locked = true,
+}
+local repeatingMediaBindOptions = {
+    submap_universal = true,
+    dont_inhibit = true,
+    locked = true,
+    repeating = true,
+}
+hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl --player=playerctld previous"), mediaBindOptions)
+hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl --player=playerctld play-pause"), mediaBindOptions)
+hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl --player=playerctld play-pause"), mediaBindOptions)
+hl.bind("XF86AudioStop", hl.dsp.exec_cmd("playerctl --player=playerctld stop"), mediaBindOptions)
+hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl --player=playerctld next"), mediaBindOptions)
+hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), mediaBindOptions)
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), repeatingMediaBindOptions)
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), repeatingMediaBindOptions)
 
 hl.bind("Menu", hl.dsp.submap("function-keys"))
 hl.define_submap("function-keys", function()

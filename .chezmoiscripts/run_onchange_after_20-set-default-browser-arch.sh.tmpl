@@ -1,0 +1,17 @@
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "arch") -}}
+#!/bin/sh
+set -eu
+
+browser_desktop=firefox.desktop
+
+xdg-settings set default-web-browser "$browser_desktop"
+
+for mime_type in \
+  application/xhtml+xml \
+  text/html \
+  x-scheme-handler/http \
+  x-scheme-handler/https
+do
+  xdg-mime default "$browser_desktop" "$mime_type"
+done
+{{ end -}}

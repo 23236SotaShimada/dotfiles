@@ -71,4 +71,5 @@ sudo systemctl disable getty@tty2.service
 sudo systemctl enable --now bluetooth.service
 sudo systemctl enable ly@tty2.service
 sudo systemctl enable NetworkManager.service
+systemctl --user enable --now mpris-proxy.service
 {{ end -}}
