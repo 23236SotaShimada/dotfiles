@@ -15,6 +15,7 @@ window#waybar {
 
 #custom-launcher,
 #custom-workspaces,
+#window,
 #image,
 #custom-media-previous,
 #custom-media-play,
@@ -31,6 +32,10 @@ window#waybar {
 
 #custom-workspaces {
   color: @overlay0;
+}
+
+#window {
+  color: @subtext0;
 }
 
 #custom-media-play {

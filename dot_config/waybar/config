@@ -3,7 +3,7 @@
   "position": "top",
   "height": 30,
   "spacing": 4,
-  "modules-left": ["custom/launcher", "custom/workspaces"],
+  "modules-left": ["custom/launcher", "custom/workspaces", "hyprland/window"],
   "modules-center": ["custom/media-previous", "image#media-art", "custom/media-play", "custom/media-next"],
   "modules-right": ["tray", "network", "bluetooth", "pulseaudio", "idle_inhibitor", "battery", "custom/date"],
   "custom/launcher": {
@@ -24,6 +24,11 @@
     "format": "{}",
     "interval": 1,
     "escape": false,
+    "tooltip": false
+  },
+  "hyprland/window": {
+    "format": "{title}",
+    "max-length": 50,
     "tooltip": false
   },
   "image#media-art": {
