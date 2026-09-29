@@ -44,6 +44,11 @@ type = "file"
 url = "https://raw.githubusercontent.com/catppuccin/hyprtoolkit/main/themes/latte/catppuccin-latte-mauve.conf"
 refreshPeriod = "168h"
 
+[".config/opencode/themes/catppuccin-latte-mauve.json"]
+type = "file"
+url = "https://raw.githubusercontent.com/catppuccin/opencode/main/themes/latte/catppuccin-latte-mauve.json"
+refreshPeriod = "168h"
+
 [".local/share/icons/catppuccin-latte-light-cursors"]
 type = "archive"
 url = "https://github.com/catppuccin/cursors/releases/download/v2.0.0/catppuccin-latte-light-cursors.zip"
