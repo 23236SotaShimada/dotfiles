@@ -25,6 +25,9 @@ chezmoi update
 - `hyprpolkitagent` — GUIでのPolkit権限昇格・パスワード入力
 - `mako` — 不要。`swaync`へ置き換え
 
+### waybarの要素間隔修正
+要素ごとに幅や間隔が異って見える。、文字サイズも統一されていないように感じる。
+
 ### プライバシインジケータ
 - Waybar標準の`privacy`モジュールを利用
   - 画面共有・収録

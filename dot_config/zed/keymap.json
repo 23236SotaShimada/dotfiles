@@ -1,0 +1,25 @@
+[
+  {
+    "bindings": {
+      "super-a": ["workspace::SendKeystrokes", "ctrl-a"],
+      "super-c": ["workspace::SendKeystrokes", "ctrl-c"],
+      "super-d": ["workspace::SendKeystrokes", "ctrl-d"],
+      "super-f": ["workspace::SendKeystrokes", "ctrl-f"],
+      "super-k": ["workspace::SendKeystrokes", "ctrl-k"],
+      "super-v": ["workspace::SendKeystrokes", "ctrl-v"],
+      "super-w": ["workspace::SendKeystrokes", "ctrl-w"]
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "super-a": "editor::SelectAll",
+      "super-c": "terminal::Copy",
+      "super-d": "pane::SplitRight",
+      "super-f": "buffer_search::Deploy",
+      "super-k": "terminal::Clear",
+      "super-v": "terminal::Paste",
+      "super-w": ["pane::CloseActiveItem", { "close_pinned": false }]
+    }
+  }
+]

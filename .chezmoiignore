@@ -24,7 +24,9 @@ screen.webp
 .config/qt6ct/**
 .config/waybar
 .config/waybar/**
+.config/zed/keymap.json
 .local/bin/clipboard-menu
+.local/bin/cava-wallpaper
 .local/bin/configure-thunar-volman
 .local/bin/power-menu
 .local/bin/screenshot-to-clipboard

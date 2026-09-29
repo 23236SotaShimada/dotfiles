@@ -1,0 +1,13 @@
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "arch") -}}
+#!/bin/sh
+set -eu
+
+# hyprpm needs headers matching the installed Hyprland before it can build plugins.
+hyprpm update
+
+if ! hyprpm list 2>/dev/null | grep -q hyprwinwrap; then
+  hyprpm add https://github.com/gen3vra/hyprwinwrap
+fi
+
+hyprpm enable hyprwinwrap
+{{ end -}}

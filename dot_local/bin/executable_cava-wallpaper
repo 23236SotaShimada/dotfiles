@@ -1,0 +1,23 @@
+#!/bin/sh
+set -eu
+
+command -v hyprpm >/dev/null 2>&1 || exit 0
+command -v hyprctl >/dev/null 2>&1 || exit 0
+command -v ghostty >/dev/null 2>&1 || exit 0
+command -v cava >/dev/null 2>&1 || exit 0
+
+if ! hyprctl plugin list | grep -q hyprwinwrap; then
+  hyprpm reload
+  hyprctl reload
+fi
+
+hyprctl plugin list | grep -q hyprwinwrap || exit 0
+
+exec ghostty \
+  --class=com.mitchellh.ghostty.cava-wallpaper \
+  --title=cava-wallpaper \
+  --gtk-single-instance=false \
+  --window-decoration=none \
+  --background-opacity=0 \
+  --background-opacity-cells=true \
+  -e sh -c 'sleep 1; exec cava'

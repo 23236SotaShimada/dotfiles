@@ -14,6 +14,15 @@ local function isGhostty(window)
     return window ~= nil and string.find(string.lower(window.class), "ghostty", 1, true) ~= nil
 end
 
+local function isZed(window)
+    if window == nil then
+        return false
+    end
+
+    local class = string.lower(window.class)
+    return class == "zed" or class == "zed-editor" or string.find(class, "dev.zed.zed", 1, true) == 1
+end
+
 local function sendShortcut(window, mods, key)
     hl.dispatch(hl.dsp.send_key_state({
         mods = mods,
@@ -43,6 +52,11 @@ local function bindCommand(input, output, options)
                 return
             end
             sendShortcut(window, options.ghostty.mods, options.ghostty.key or output)
+            return
+        end
+
+        if isZed(window) and options.zed ~= nil then
+            sendShortcut(window, options.zed.mods, options.zed.key or output)
             return
         end
 
@@ -83,10 +97,12 @@ hl.env("HYPRCURSOR_THEME", "catppuccin-latte-light-cursors")
 hl.env("HYPRCURSOR_SIZE", "24")
 hl.env("XCURSOR_THEME", "catppuccin-latte-light-cursors")
 hl.env("XCURSOR_SIZE", "24")
+hl.permission("/usr/(bin|local/bin)/hyprpm", "plugin", "allow")
 
 hl.on("hyprland.start", function()
     hl.exec_cmd("mako")
     hl.exec_cmd("waybar")
+    hl.exec_cmd("~/.local/bin/cava-wallpaper")
     hl.exec_cmd("hypridle")
     hl.exec_cmd("fcitx5 -d")
     hl.exec_cmd("~/.local/bin/configure-thunar-volman")
@@ -130,6 +146,18 @@ hl.config({
         background_color = colors.base,
     },
 })
+
+if hl.plugin.hyprwinwrap ~= nil then
+    hl.plugin.hyprwinwrap.window({
+        class = "com.mitchellh.ghostty.cava-wallpaper",
+        title = "cava-wallpaper",
+        layer = 0,
+        pos_x = 0,
+        pos_y = 0,
+        size_x = 100,
+        size_y = 100,
+    })
+end
 
 hl.window_rule({
     name = "firefox-pip",
@@ -243,13 +271,13 @@ end)
 hl.bind("CTRL + LEFT", dynamicWorkspaces.focus_previous)
 hl.bind("CTRL + RIGHT", dynamicWorkspaces.focus_next)
 
-bindCommand("A", "A", { ghostty = { mods = "CTRL SHIFT" } })
+bindCommand("A", "A", { ghostty = { mods = "CTRL SHIFT" }, zed = { mods = "SUPER" } })
 bindCommand("B", "B")
-bindCommand("C", "C", { ghostty = { mods = "CTRL SHIFT" } })
-bindCommand("D", "D", { ghostty = { mods = "SUPER" } })
-bindCommand("F", "F", { ghostty = { mods = "CTRL SHIFT" } })
+bindCommand("C", "C", { ghostty = { mods = "CTRL SHIFT" }, zed = { mods = "SUPER" } })
+bindCommand("D", "D", { ghostty = { mods = "SUPER" }, zed = { mods = "SUPER" } })
+bindCommand("F", "F", { ghostty = { mods = "CTRL SHIFT" }, zed = { mods = "SUPER" } })
 bindCommand("I", "I")
-bindCommand("K", "K", { ghostty = { mods = "CTRL SHIFT" } })
+bindCommand("K", "K", { ghostty = { mods = "CTRL SHIFT" }, zed = { mods = "SUPER" } })
 bindCommand("L", "L")
 bindCommand("N", "N", { ghostty = { mods = "CTRL SHIFT" } })
 bindCommand("O", "O")
@@ -258,8 +286,8 @@ bindCommand("R", "R")
 bindCommand("S", "S")
 bindCommand("T", "T", { ghostty = { mods = "CTRL SHIFT" } })
 bindCommand("U", "U")
-bindCommand("V", "V", { ghostty = { mods = "CTRL SHIFT" } })
-bindCommand("W", "W", { ghostty = { mods = "CTRL SHIFT" } })
+bindCommand("V", "V", { ghostty = { mods = "CTRL SHIFT" }, zed = { mods = "SUPER" } })
+bindCommand("W", "W", { ghostty = { mods = "CTRL SHIFT" }, zed = { mods = "SUPER" } })
 bindCommand("X", "X")
 bindCommand("Y", "Y")
 bindCommand("Z", "Z")
