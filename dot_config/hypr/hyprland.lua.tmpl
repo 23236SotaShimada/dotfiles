@@ -100,7 +100,7 @@ hl.env("XCURSOR_SIZE", "24")
 hl.permission("/usr/(bin|local/bin)/hyprpm", "plugin", "allow")
 
 hl.on("hyprland.start", function()
-    hl.exec_cmd("mako")
+    hl.exec_cmd("swaync")
     hl.exec_cmd("waybar")
     hl.exec_cmd("~/.local/bin/cava-wallpaper")
     hl.exec_cmd("hypridle")

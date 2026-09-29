@@ -24,11 +24,6 @@ type = "file"
 url = "https://raw.githubusercontent.com/catppuccin/waybar/main/themes/latte.css"
 refreshPeriod = "168h"
 
-[".config/mako/themes/catppuccin-latte-mauve"]
-type = "file"
-url = "https://raw.githubusercontent.com/catppuccin/mako/main/themes/catppuccin-latte/catppuccin-latte-mauve"
-refreshPeriod = "168h"
-
 [".config/hypr/themes/catppuccin-latte.lua"]
 type = "file"
 url = "https://raw.githubusercontent.com/catppuccin/hyprland/main/themes/catppuccin-latte.lua"

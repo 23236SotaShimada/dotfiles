@@ -67,8 +67,10 @@
   "custom/date": {
     "exec": "$HOME/.local/bin/waybar-date",
     "format": "{}",
-    "interval": 30,
-    "tooltip": false
+    "return-type": "json",
+    "interval": 5,
+    "tooltip": false,
+    "on-click": "swaync-client -t"
   },
   "network": {
     "format-wifi": "󰖩 {essid}",

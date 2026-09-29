@@ -14,8 +14,8 @@ screen.webp
 .config/gtk-4.0/**
 .config/hypr
 .config/hypr/**
-.config/mako
-.config/mako/**
+.config/swaync
+.config/swaync/**
 .config/qt
 .config/qt/**
 .config/qt5ct

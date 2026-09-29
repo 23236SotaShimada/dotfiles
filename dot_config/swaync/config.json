@@ -1,0 +1,33 @@
+{
+  "ignore-gtk-theme": true,
+  "cssPriority": "user",
+  "positionX": "right",
+  "positionY": "top",
+  "layer": "overlay",
+  "control-center-layer": "top",
+  "control-center-margin-top": 0,
+  "control-center-margin-right": 10,
+  "control-center-margin-bottom": 10,
+  "control-center-width": 400,
+  "notification-window-width": 400,
+  "fit-to-screen": true,
+  "timeout": 5,
+  "timeout-low": 5,
+  "timeout-critical": 0,
+  "notification-grouping": true,
+  "text-empty": "No notifications",
+  "widgets": ["title", "dnd", "notifications"],
+  "widget-config": {
+    "title": {
+      "text": "Notifications",
+      "clear-all-button": true,
+      "button-text": "Clear all"
+    },
+    "dnd": {
+      "text": "Do not disturb"
+    },
+    "notifications": {
+      "vexpand": true
+    }
+  }
+}

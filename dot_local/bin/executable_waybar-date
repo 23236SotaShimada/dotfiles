@@ -30,4 +30,16 @@ case "$(date +%w)" in
   6) weekday=Sat ;;
 esac
 
-printf '%s %s/%s/%s (%s) %s\n' "$era" "$era_year" "$month" "$day" "$weekday" "$(date +%H:%M)"
+date_text="$(printf '%s %s/%s/%s (%s) %s' "$era" "$era_year" "$month" "$day" "$weekday" "$(date +%H:%M)")"
+notification_count="$(timeout 1s swaync-client --count 2>/dev/null || :)"
+
+case "$notification_count" in
+  ''|*[!0-9]*) printf '{"text":"%s"}\n' "$date_text" ;;
+  *)
+    if [ "$notification_count" -gt 0 ]; then
+      printf '{"text":"%s","class":"unread"}\n' "$date_text"
+    else
+      printf '{"text":"%s"}\n' "$date_text"
+    fi
+    ;;
+esac

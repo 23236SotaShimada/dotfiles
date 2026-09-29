@@ -20,10 +20,11 @@ chezmoi update
 
 ## todo
 ### パッケージの変更、追加
-- `swaync` — 通知ポップアップ、通知履歴、通知センター、クイック設定
 - `gnome-keyring` — パスワード・トークン・Secret Service管理
 - `hyprpolkitagent` — GUIでのPolkit権限昇格・パスワード入力
-- `mako` — 不要。`swaync`へ置き換え
+
+### swaync のクイック設定
+- 輝度、ネットワーク、音量、Bluetooth の操作を通知センターに集約
 
 ### waybarの要素間隔修正
 要素ごとに幅や間隔が異って見える。、文字サイズも統一されていないように感じる。

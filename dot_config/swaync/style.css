@@ -1,0 +1,183 @@
+/* Catppuccin Latte colors, with the square and quiet styling used in this dotfiles. */
+@define-color base #eff1f5;
+@define-color mantle #e6e9ef;
+@define-color surface0 #ccd0da;
+@define-color surface1 #bcc0cc;
+@define-color surface2 #acb0be;
+@define-color subtext0 #6c6f85;
+@define-color text #4c4f69;
+@define-color mauve #8839ef;
+@define-color red #d20f39;
+
+:root {
+  --cc-bg: #eff1f5;
+  --noti-border-color: #8839ef;
+  --noti-bg: 239, 241, 245;
+  --noti-bg-alpha: 1;
+  --noti-bg-hover: #eff1f5;
+  --noti-bg-focus: transparent;
+  --noti-close-bg: #e6e9ef;
+  --noti-close-bg-hover: #ccd0da;
+  --text-color: #4c4f69;
+  --text-color-disabled: #9ca0b0;
+  --border-radius: 0px;
+  --notification-shadow: none;
+  --notification-icon-size: 40px;
+  --font-size-body: 13px;
+  --font-size-summary: 13px;
+}
+
+* {
+  border-radius: 0;
+  font-family: "SpaceMono Nerd Font", "Noto Sans Mono CJK JP", "Noto Color Emoji";
+  font-size: 13px;
+}
+
+.notification-background {
+  background: transparent;
+  color: @text;
+  border: none;
+  box-shadow: none;
+  margin: 2px 4px;
+}
+
+.notification-row .notification-background {
+  padding: 2px 4px;
+}
+
+.floating-notifications .notification-row .notification-background {
+  margin: 0 10px 4px 0;
+  padding: 0;
+}
+
+.notification-row .notification-background .notification {
+  background: @base;
+  color: @text;
+  border: 1px solid @mauve;
+  box-shadow: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+.notification-row .notification-background .notification.critical {
+  border-left: 2px solid @red;
+}
+
+.notification-row .notification-background .notification .notification-default-action {
+  color: @text;
+  padding: 8px 8px 9px;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .text-box .summary {
+  color: @text;
+  font-weight: bold;
+  padding-bottom: 2px;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .text-box .body,
+.notification-row .notification-background .notification .notification-default-action .notification-content .text-box .time {
+  color: @subtext0;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .text-box .body {
+  padding-bottom: 2px;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .text-box .time {
+  margin-right: 20px;
+}
+
+.notification-row .notification-background .close-button {
+  min-width: 16px;
+  min-height: 16px;
+  margin: 2px 2px 0 0;
+  padding: 0;
+  background: transparent;
+  color: @subtext0;
+  border: none;
+  box-shadow: none;
+}
+
+.notification-row .notification-background .close-button image {
+  -gtk-icon-size: 12px;
+}
+
+.notification-row .notification-background .close-button:hover {
+  background: @surface0;
+  color: @text;
+}
+
+.notification-group .notification-group-close-button .close-button {
+  margin: 4px 6px;
+}
+
+.notification-row .notification-background .notification .notification-action > button,
+.control-center .widget-title button {
+  background: @mantle;
+  color: @text;
+  border: 1px solid @surface1;
+  box-shadow: none;
+  padding: 3px 6px;
+}
+
+.notification-row .notification-background .notification .notification-action > button:hover,
+.control-center .widget-title button:hover {
+  background: @surface0;
+  border-color: @mauve;
+  color: @mauve;
+}
+
+.control-center {
+  background: @base;
+  color: @text;
+  border: 1px solid @mauve;
+  box-shadow: none;
+  padding: 6px;
+}
+
+.widget {
+  margin: 0;
+  padding: 6px 8px;
+}
+
+.control-center .notification-row .notification-background {
+  margin: 0;
+  padding: 2px 0;
+}
+
+.control-center .control-center-list .notification {
+  box-shadow: none;
+}
+
+.widget-title {
+  color: @text;
+}
+
+.widget-title > label {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.widget-dnd {
+  color: @text;
+}
+
+.control-center .widget-dnd label {
+  color: @text;
+}
+
+.widget-dnd > switch {
+  background: @surface0;
+  border: 1px solid @surface2;
+  box-shadow: none;
+}
+
+.widget-dnd > switch:checked {
+  background: @mauve;
+  border-color: @mauve;
+}
+
+.widget-dnd > switch slider {
+  background: @base;
+  box-shadow: none;
+}
