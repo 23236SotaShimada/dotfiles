@@ -16,6 +16,19 @@
   "timeout-critical": 0,
   "notification-grouping": true,
   "text-empty": "No notifications",
+  "script-fail-notify": false,
+  "scripts": {
+    "notification-sound-normal": {
+      "exec": "sh -c 'exec pw-play \"${XDG_CONFIG_HOME:-$HOME/.config}/swaync/sounds/notification-default.wav\"'",
+      "urgency": "Normal",
+      "run-on": "receive"
+    },
+    "notification-sound-critical": {
+      "exec": "sh -c 'exec pw-play \"${XDG_CONFIG_HOME:-$HOME/.config}/swaync/sounds/notification-error.wav\"'",
+      "urgency": "Critical",
+      "run-on": "receive"
+    }
+  },
   "widgets": ["title", "dnd", "notifications"],
   "widget-config": {
     "title": {
