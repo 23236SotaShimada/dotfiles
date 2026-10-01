@@ -1,0 +1,94 @@
+#!/usr/bin/env python3
+"""Display the running Hyprland's bindings in fuzzel without executing them."""
+
+import json
+import subprocess
+import sys
+
+
+MODIFIERS = (
+    (64, "󰘳"),  # Nerd Font: md-apple-keyboard-command
+    (4, "⌃"),
+    (8, "⌥"),
+    (1, "⇧"),
+    (2, "Caps"),
+    (16, "Mod2"),
+    (32, "Mod3"),
+    (128, "Mod5"),
+)
+KEY_NAMES = {
+    "slash": "/",
+    "return": "↵",
+    "space": "Space",
+    "tab": "⇥",
+    "escape": "Esc",
+    "left": "←",
+    "right": "→",
+    "up": "↑",
+    "down": "↓",
+    "backspace": "⌫",
+    "delete": "⌦",
+    "mouse:272": "左クリック",
+    "mouse:273": "右クリック",
+}
+
+
+def format_binding(binding):
+    mask = binding.get("modmask", 0)
+    keys = [symbol for bit, symbol in MODIFIERS if mask & bit]
+    key = binding.get("key") or (
+        f"code:{binding['keycode']}" if binding.get("keycode") else "キー未取得"
+    )
+    keys.append(KEY_NAMES.get(key.lower(), key.upper() if len(key) == 1 else key))
+    shortcut = " + ".join(keys)
+    description = binding.get("description")
+    if not description:
+        dispatcher = binding.get("dispatcher", "")
+        description = (
+            "Lua コールバック（説明なし）"
+            if dispatcher == "__lua"
+            else f"{dispatcher} {binding.get('arg', '')}".strip()
+        )
+    notes = []
+    if binding.get("submap"):
+        notes.append(f"モード: {binding['submap']}")
+    if binding.get("release"):
+        notes.append("離したとき")
+    if binding.get("longPress"):
+        notes.append("長押し")
+    suffix = f" [{' / '.join(notes)}]" if notes else ""
+    return f"{shortcut:<24}  {description}{suffix}".replace("\n", " ").replace("\r", " ")
+
+
+def main():
+    try:
+        result = subprocess.run(
+            ["hyprctl", "-j", "binds"], check=True, capture_output=True, text=True
+        )
+        bindings = json.loads(result.stdout)
+        # Keep config order; place Command shortcuts first for easy browsing.
+        bindings.sort(key=lambda binding: not (binding.get("modmask", 0) & 64))
+        rows = [format_binding(binding) for binding in bindings]
+        result = subprocess.run(
+            [
+                "fuzzel",
+                "--dmenu",
+                "--prompt=󰘳 Keybinds> ",
+                "--placeholder=検索 / Esc で閉じる",
+                "--width=100",
+                "--lines=20",
+                "--no-sort",
+                "--counter",
+            ],
+            input="\n".join(rows),
+            text=True,
+            stdout=subprocess.DEVNULL,
+        )
+        return 0 if result.returncode in (0, 1) else result.returncode
+    except (OSError, subprocess.CalledProcessError, ValueError) as error:
+        print(f"hyprland-cheatsheet: {error}", file=sys.stderr)
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -16,12 +16,12 @@ refreshPeriod = "168h"
 {{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "arch") -}}
 [".config/swaync/sounds/notification-default.wav"]
 type = "file"
-url = "https://github.com/ppy/osu-resources/raw/refs/heads/master/osu.Game.Resources/Samples/UI/notification-default.wav"
+url = "https://raw.githubusercontent.com/ppy/osu-resources/master/osu.Game.Resources/Samples/UI/notification-default.wav"
 refreshPeriod = "168h"
 
 [".config/swaync/sounds/notification-error.wav"]
 type = "file"
-url = "https://github.com/ppy/osu-resources/raw/refs/heads/master/osu.Game.Resources/Samples/UI/notification-error.wav"
+url = "https://raw.githubusercontent.com/ppy/osu-resources/master/osu.Game.Resources/Samples/UI/notification-error.wav"
 refreshPeriod = "168h"
 
 [".config/fuzzel/themes/catppuccin-latte-mauve.ini"]

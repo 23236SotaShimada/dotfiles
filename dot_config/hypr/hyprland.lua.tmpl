@@ -10,6 +10,15 @@ local terminal = "ghostty"
 local menu = "fuzzel"
 local fileManager = "thunar"
 
+local function bind(keys, action, description, options)
+    local bindOptions = {}
+    for key, value in pairs(options or {}) do
+        bindOptions[key] = value
+    end
+    bindOptions.description = description
+    return hl.bind(keys, action, bindOptions)
+end
+
 local function isGhostty(window)
     return window ~= nil and string.find(string.lower(window.class), "ghostty", 1, true) ~= nil
 end
@@ -41,7 +50,7 @@ end
 local function bindCommand(input, output, options)
     options = options or {}
 
-    hl.bind(mainMod .. " + " .. input, function()
+    bind(mainMod .. " + " .. input, function()
         local window = hl.get_active_window()
         if window == nil then
             return
@@ -61,20 +70,20 @@ local function bindCommand(input, output, options)
         end
 
         sendShortcut(window, options.mods or "CTRL", output)
-    end)
+    end, "アプリへ送信: " .. (options.mods or "CTRL") .. " + " .. output .. "（Ghostty / Zed は個別設定）")
 end
 
 local function bindOption(input, output)
-    hl.bind("ALT + " .. input, function()
+    bind("ALT + " .. input, function()
         local window = hl.get_active_window()
         if window ~= nil then
             sendShortcut(window, "CTRL", output)
         end
-    end, { repeating = true })
+    end, "単語単位の移動 / 削除: CTRL + " .. output, { repeating = true })
 end
 
 local function bindEmacs(input, output, mods)
-    hl.bind("CTRL + " .. input, function()
+    bind("CTRL + " .. input, function()
         local window = hl.get_active_window()
         if window == nil then
             return
@@ -86,7 +95,7 @@ local function bindEmacs(input, output, mods)
         end
 
         sendShortcut(window, mods or "", output)
-    end, { repeating = true })
+    end, "Emacs 操作: " .. (mods or "") .. " " .. output .. "（Ghostty では CTRL + " .. input .. "）", { repeating = true })
 end
 
 hl.env("XMODIFIERS", "@im=fcitx")
@@ -189,28 +198,28 @@ local alwaysImeBind = {
     dont_inhibit = true,
     locked = true,
 }
-hl.bind("Muhenkan", hl.dsp.exec_cmd("fcitx5-remote -c"), alwaysImeBind)
-hl.bind("Henkan", hl.dsp.exec_cmd("fcitx5-remote -o"), alwaysImeBind)
-hl.bind("Hiragana_Katakana", hl.dsp.exec_cmd("fcitx5-remote -o"), alwaysImeBind)
-hl.bind("F13", hl.dsp.exec_cmd("fcitx5-remote -c"), alwaysImeBind)
-hl.bind("F14", hl.dsp.exec_cmd("fcitx5-remote -o"), alwaysImeBind)
-hl.bind("XF86Tools", hl.dsp.exec_cmd("fcitx5-remote -c"), alwaysImeBind)
-hl.bind("XF86Launch5", hl.dsp.exec_cmd("fcitx5-remote -o"), alwaysImeBind)
-hl.bind("code:191", hl.dsp.exec_cmd("fcitx5-remote -c"), alwaysImeBind)
-hl.bind("code:192", hl.dsp.exec_cmd("fcitx5-remote -o"), alwaysImeBind)
+bind("Muhenkan", hl.dsp.exec_cmd("fcitx5-remote -c"), "IME をオフ", alwaysImeBind)
+bind("Henkan", hl.dsp.exec_cmd("fcitx5-remote -o"), "IME をオン", alwaysImeBind)
+bind("Hiragana_Katakana", hl.dsp.exec_cmd("fcitx5-remote -o"), "IME をオン", alwaysImeBind)
+bind("F13", hl.dsp.exec_cmd("fcitx5-remote -c"), "IME をオフ", alwaysImeBind)
+bind("F14", hl.dsp.exec_cmd("fcitx5-remote -o"), "IME をオン", alwaysImeBind)
+bind("XF86Tools", hl.dsp.exec_cmd("fcitx5-remote -c"), "IME をオフ", alwaysImeBind)
+bind("XF86Launch5", hl.dsp.exec_cmd("fcitx5-remote -o"), "IME をオン", alwaysImeBind)
+bind("code:191", hl.dsp.exec_cmd("fcitx5-remote -c"), "IME をオフ（code:191）", alwaysImeBind)
+bind("code:192", hl.dsp.exec_cmd("fcitx5-remote -o"), "IME をオン（code:192）", alwaysImeBind)
 
-hl.bind("F1", hl.dsp.exec_cmd("brightnessctl -q set 10%-"), { repeating = true })
-hl.bind("F2", hl.dsp.exec_cmd("brightnessctl -q set +10%"), { repeating = true })
-hl.bind("F3", function() end)
-hl.bind("F4", hl.dsp.exec_cmd(menu))
-hl.bind("F5", function() end)
-hl.bind("F6", function() end)
-hl.bind("F7", hl.dsp.exec_cmd("playerctl --player=playerctld previous"))
-hl.bind("F8", hl.dsp.exec_cmd("playerctl --player=playerctld play-pause"))
-hl.bind("F9", hl.dsp.exec_cmd("playerctl --player=playerctld next"))
-hl.bind("F10", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"))
-hl.bind("F11", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), { repeating = true })
-hl.bind("F12", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { repeating = true })
+bind("F1", hl.dsp.exec_cmd("brightnessctl -q set 10%-"), "画面を暗くする", { repeating = true })
+bind("F2", hl.dsp.exec_cmd("brightnessctl -q set +10%"), "画面を明るくする", { repeating = true })
+bind("F3", function() end, "予約済み（操作なし）")
+bind("F4", hl.dsp.exec_cmd(menu), "アプリランチャー")
+bind("F5", function() end, "予約済み（操作なし）")
+bind("F6", function() end, "予約済み（操作なし）")
+bind("F7", hl.dsp.exec_cmd("playerctl --player=playerctld previous"), "前の曲")
+bind("F8", hl.dsp.exec_cmd("playerctl --player=playerctld play-pause"), "再生 / 一時停止")
+bind("F9", hl.dsp.exec_cmd("playerctl --player=playerctld next"), "次の曲")
+bind("F10", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), "ミュートを切り替え")
+bind("F11", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), "音量を下げる", { repeating = true })
+bind("F12", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), "音量を上げる", { repeating = true })
 
 local mediaBindOptions = {
     submap_universal = true,
@@ -223,53 +232,78 @@ local repeatingMediaBindOptions = {
     locked = true,
     repeating = true,
 }
-hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl --player=playerctld previous"), mediaBindOptions)
-hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl --player=playerctld play-pause"), mediaBindOptions)
-hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl --player=playerctld play-pause"), mediaBindOptions)
-hl.bind("XF86AudioStop", hl.dsp.exec_cmd("playerctl --player=playerctld stop"), mediaBindOptions)
-hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl --player=playerctld next"), mediaBindOptions)
-hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), mediaBindOptions)
-hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), repeatingMediaBindOptions)
-hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), repeatingMediaBindOptions)
+bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl --player=playerctld previous"), "前の曲", mediaBindOptions)
+bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl --player=playerctld play-pause"), "再生 / 一時停止", mediaBindOptions)
+bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl --player=playerctld play-pause"), "再生 / 一時停止", mediaBindOptions)
+bind("XF86AudioStop", hl.dsp.exec_cmd("playerctl --player=playerctld stop"), "再生を停止", mediaBindOptions)
+bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl --player=playerctld next"), "次の曲", mediaBindOptions)
+bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), "ミュートを切り替え", mediaBindOptions)
+bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), "音量を下げる", repeatingMediaBindOptions)
+bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), "音量を上げる", repeatingMediaBindOptions)
 
-hl.bind("Menu", hl.dsp.submap("function-keys"))
+bind("Menu", hl.dsp.submap("function-keys"), "function-keys モードへ切り替え")
 hl.define_submap("function-keys", function()
-    hl.bind("Menu", hl.dsp.submap("reset"), { release = true, submap_universal = true })
+    bind("Menu", hl.dsp.submap("reset"), "通常モードへ戻る", { release = true, submap_universal = true })
 end)
 
-hl.bind(mainMod .. " + RETURN", hl.dsp.exec_cmd(terminal))
-hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd(menu))
-hl.bind(mainMod .. " + ALT + SPACE", hl.dsp.exec_cmd(fileManager))
-hl.bind(mainMod .. " + SHIFT + V", hl.dsp.exec_cmd("~/.local/bin/clipboard-menu"))
-hl.bind(mainMod .. " + SHIFT + CTRL + 3", hl.dsp.exec_cmd("~/.local/bin/screenshot-to-clipboard full"))
-hl.bind(mainMod .. " + SHIFT + CTRL + 4", hl.dsp.exec_cmd("~/.local/bin/screenshot-to-clipboard region"))
-hl.bind(mainMod .. " + ALT + ESCAPE", hl.dsp.exec_cmd("~/.local/bin/power-menu"))
-hl.bind(mainMod .. " + CTRL + Q", hl.dsp.exec_cmd("hyprlock"))
-hl.bind(mainMod .. " + Q", hl.dsp.window.close())
-hl.bind(mainMod .. " + CTRL + F", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
-hl.bind(mainMod .. " + SHIFT + SPACE", hl.dsp.window.float({ action = "toggle" }))
-hl.bind(mainMod .. " + SHIFT + P", function()
+bind(mainMod .. " + slash", hl.dsp.exec_cmd("~/.local/bin/hyprland-cheatsheet"), "キーバインドのチートシート")
+bind(mainMod .. " + RETURN", hl.dsp.exec_cmd(terminal), "ターミナルを開く")
+bind(mainMod .. " + SPACE", hl.dsp.exec_cmd(menu), "アプリランチャー")
+bind(mainMod .. " + ALT + SPACE", hl.dsp.exec_cmd(fileManager), "ファイルマネージャー")
+bind(mainMod .. " + SHIFT + V", hl.dsp.exec_cmd("~/.local/bin/clipboard-menu"), "クリップボード履歴")
+bind(mainMod .. " + SHIFT + CTRL + 3", hl.dsp.exec_cmd("~/.local/bin/screenshot-to-clipboard full"), "画面全体をクリップボードへ撮影")
+bind(mainMod .. " + SHIFT + CTRL + 4", hl.dsp.exec_cmd("~/.local/bin/screenshot-to-clipboard region"), "選択範囲をクリップボードへ撮影")
+bind(mainMod .. " + ALT + ESCAPE", hl.dsp.exec_cmd("~/.local/bin/power-menu"), "電源メニュー")
+bind(mainMod .. " + CTRL + Q", hl.dsp.exec_cmd("hyprlock"), "画面をロック")
+bind(mainMod .. " + Q", hl.dsp.window.close(), "ウィンドウを閉じる")
+bind(mainMod .. " + CTRL + F", hl.dsp.window.fullscreen({ mode = "fullscreen" }), "全画面を切り替え")
+bind(mainMod .. " + SHIFT + SPACE", hl.dsp.window.float({ action = "toggle" }), "フローティングを切り替え")
+bind(mainMod .. " + SHIFT + P", function()
     if hl.get_active_window() == nil then
         return
     end
 
     hl.dispatch(hl.dsp.window.float({ action = "set" }))
     hl.dispatch(hl.dsp.window.pin({ action = "toggle" }))
-end)
-hl.bind(mainMod .. " + M", hl.dsp.workspace.toggle_special("scratchpad"))
-hl.bind(mainMod .. " + SHIFT + M", hl.dsp.window.move({ workspace = "special:scratchpad" }))
+end, "フローティングにして全ワークスペースへの固定を切り替え")
+bind(mainMod .. " + M", hl.dsp.workspace.toggle_special("scratchpad"), "スクラッチパッドを表示 / 非表示")
+bind(mainMod .. " + SHIFT + M", hl.dsp.window.move({ workspace = "special:scratchpad" }), "ウィンドウをスクラッチパッドへ移動")
+bind(mainMod .. " + ALT + SHIFT + M", function()
+    local window = hl.get_active_window()
+    if window == nil or window.workspace == nil or not window.workspace.special then
+        return
+    end
 
-hl.bind(mainMod .. " + TAB", function()
+    local monitor = window.monitor
+    local workspace = monitor ~= nil and monitor.active_workspace or nil
+    if workspace == nil or workspace.special then
+        return
+    end
+
+    hl.dispatch(hl.dsp.window.move({ workspace = workspace, window = window }))
+end, "特殊ワークスペースから通常ワークスペースへ戻す")
+
+-- Window groups: toggle, extract, switch tabs, and move into a neighboring group.
+bind(mainMod .. " + G", hl.dsp.group.toggle(), "ウィンドウグループを切り替え")
+bind(mainMod .. " + SHIFT + G", hl.dsp.window.move({ out_of_group = true }), "ウィンドウをグループから取り出す")
+bind(mainMod .. " + ALT + LEFT", hl.dsp.group.prev(), "グループ内の前のタブ")
+bind(mainMod .. " + ALT + RIGHT", hl.dsp.group.next(), "グループ内の次のタブ")
+
+for _, direction in ipairs({ "left", "right", "up", "down" }) do
+    bind(mainMod .. " + ALT + SHIFT + " .. string.upper(direction), hl.dsp.window.move({ into_group = direction }), "隣のグループへ移動: " .. direction)
+end
+
+bind(mainMod .. " + TAB", function()
     hl.dispatch(hl.dsp.window.cycle_next())
     hl.dispatch(hl.dsp.window.alter_zorder({ mode = "top" }))
-end)
-hl.bind(mainMod .. " + SHIFT + TAB", function()
+end, "次のウィンドウへ切り替え")
+bind(mainMod .. " + SHIFT + TAB", function()
     hl.dispatch(hl.dsp.window.cycle_next({ next = false }))
     hl.dispatch(hl.dsp.window.alter_zorder({ mode = "top" }))
-end)
+end, "前のウィンドウへ切り替え")
 
-hl.bind("CTRL + LEFT", dynamicWorkspaces.focus_previous)
-hl.bind("CTRL + RIGHT", dynamicWorkspaces.focus_next)
+bind("CTRL + LEFT", dynamicWorkspaces.focus_previous, "前のワークスペースへ移動")
+bind("CTRL + RIGHT", dynamicWorkspaces.focus_next, "次のワークスペースへ移動")
 
 bindCommand("A", "A", { ghostty = { mods = "CTRL SHIFT" }, zed = { mods = "SUPER" } })
 bindCommand("B", "B")
@@ -315,7 +349,7 @@ bindEmacs("N", "DOWN")
 bindEmacs("D", "DELETE")
 bindEmacs("H", "BACKSPACE")
 
-hl.bind("CTRL + K", function()
+bind("CTRL + K", function()
     local window = hl.get_active_window()
     if window == nil then
         return
@@ -328,29 +362,29 @@ hl.bind("CTRL + K", function()
 
     sendShortcut(window, "SHIFT", "END")
     sendShortcut(window, "", "BACKSPACE")
-end)
+end, "行末まで削除（Ghostty では CTRL + K）")
 
-hl.bind("ALT + B", function()
+bind("ALT + B", function()
     local window = hl.get_active_window()
     if window ~= nil then
         sendShortcut(window, isGhostty(window) and "ALT" or "CTRL", isGhostty(window) and "B" or "LEFT")
     end
-end, { repeating = true })
+end, "前の単語へ移動", { repeating = true })
 
-hl.bind("ALT + F", function()
+bind("ALT + F", function()
     local window = hl.get_active_window()
     if window ~= nil then
         sendShortcut(window, isGhostty(window) and "ALT" or "CTRL", isGhostty(window) and "F" or "RIGHT")
     end
-end, { repeating = true })
+end, "次の単語へ移動", { repeating = true })
 
-hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
-hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
+bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), "ウィンドウをドラッグ", { mouse = true })
+bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), "ウィンドウのサイズを変更", { mouse = true })
 
 for workspace = 1, 9 do
-    hl.bind(mainMod .. " + " .. workspace, hl.dsp.focus({ workspace = workspace }))
-    hl.bind(mainMod .. " + SHIFT + " .. workspace, hl.dsp.window.move({ workspace = workspace }))
+    bind(mainMod .. " + " .. workspace, hl.dsp.focus({ workspace = workspace }), "ワークスペース " .. workspace .. " へ移動")
+    bind(mainMod .. " + SHIFT + " .. workspace, hl.dsp.window.move({ workspace = workspace }), "ウィンドウをワークスペース " .. workspace .. " へ移動")
 end
 
-hl.bind(mainMod .. " + 0", hl.dsp.focus({ workspace = 10 }))
-hl.bind(mainMod .. " + SHIFT + 0", hl.dsp.window.move({ workspace = 10 }))
+bind(mainMod .. " + 0", hl.dsp.focus({ workspace = 10 }), "ワークスペース 10 へ移動")
+bind(mainMod .. " + SHIFT + 0", hl.dsp.window.move({ workspace = 10 }), "ウィンドウをワークスペース 10 へ移動")
