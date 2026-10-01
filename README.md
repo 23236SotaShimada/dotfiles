@@ -21,7 +21,6 @@ chezmoi update
 ## todo
 ### パッケージの変更、追加
 - `gnome-keyring` — パスワード・トークン・Secret Service管理
-- `hyprpolkitagent` — GUIでのPolkit権限昇格・パスワード入力
 
 ### swaync のクイック設定
 - 輝度、ネットワーク、音量、Bluetooth の操作を通知センターに集約
