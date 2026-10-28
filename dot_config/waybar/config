@@ -73,7 +73,7 @@
     "on-click": "swaync-client -t"
   },
   "network": {
-    "format-wifi": "󰖩 {essid}",
+    "format-wifi": "󰖩",
     "format-ethernet": "󰈀",
     "format-disconnected": "󰖪",
     "tooltip-format": "{ifname}: {ipaddr}",
