@@ -2,13 +2,14 @@
 {{- if hasKey . "keyboardType" -}}
 {{-   $keyboardType = index . "keyboardType" -}}
 {{- end -}}
+{{- $jis := or (eq $keyboardType "Japanese") (eq $keyboardType "Mac Japanese") -}}
 [Groups/0]
 Name=Default
-Default Layout={{ if eq $keyboardType "Japanese" }}jp{{ else }}us{{ end }}
+Default Layout={{ if $jis }}jp{{ else }}us{{ end }}
 DefaultIM=skk
 
 [Groups/0/Items/0]
-Name=keyboard-{{ if eq $keyboardType "Japanese" }}jp{{ else }}us{{ end }}
+Name=keyboard-{{ if $jis }}jp{{ else }}us{{ end }}
 Layout=
 
 [Groups/0/Items/1]

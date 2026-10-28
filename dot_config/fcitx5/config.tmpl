@@ -2,6 +2,7 @@
 {{- if hasKey . "keyboardType" -}}
 {{-   $keyboardType = index . "keyboardType" -}}
 {{- end -}}
+{{- $jis := or (eq $keyboardType "Japanese") (eq $keyboardType "Mac Japanese") -}}
 [Hotkey/TriggerKeys]
 
 [Hotkey/AltTriggerKeys]
@@ -11,10 +12,14 @@
 [Hotkey/EnumerateGroupBackwardKeys]
 
 [Hotkey/ActivateKeys]
-0={{ if eq $keyboardType "Japanese" }}Henkan{{ else }}F14{{ end }}
+{{ if eq $keyboardType "Mac Japanese" -}}
+0=Hangul
+{{ else -}}
+0={{ if $jis }}Henkan{{ else }}F14{{ end }}
+{{ end -}}
 {{ if eq $keyboardType "Japanese" -}}
 1=Hiragana_Katakana
 {{ end }}
 
 [Hotkey/DeactivateKeys]
-0={{ if eq $keyboardType "Japanese" }}Muhenkan{{ else }}F13{{ end }}
+0={{ if eq $keyboardType "Mac Japanese" }}Hangul_Hanja{{ else if $jis }}Muhenkan{{ else }}F13{{ end }}

@@ -2,6 +2,9 @@
 {{- if hasKey . "keyboardType" -}}
 {{-   $keyboardType = index . "keyboardType" -}}
 {{- end -}}
+{{- $jis := or (eq $keyboardType "Japanese") (eq $keyboardType "Mac Japanese") -}}
+{{- /* Mac キーボードは Cmd = Super / Option = Alt が元から Mac の並びなので、PC 用の入れ替えやリマップをしない */ -}}
+{{- $mac := hasPrefix "Mac " $keyboardType -}}
 local colors = require("themes.catppuccin-latte")
 local dynamicWorkspaces = require("dynamic_workspaces")
 
@@ -123,8 +126,11 @@ end)
 hl.config({
     input = {
         follow_mouse = 1,
-        kb_layout = "{{ if eq $keyboardType "Japanese" }}jp{{ else }}us{{ end }}",
-        kb_options = "ctrl:nocaps,altwin:swap_lalt_lwin",
+        kb_layout = "{{ if $jis }}jp{{ else }}us{{ end }}",
+        kb_options = "ctrl:nocaps{{ if not $mac }},altwin:swap_lalt_lwin{{ end }}",
+        touchpad = {
+            natural_scroll = true,
+        },
     },
     general = {
         gaps_in = 5,
@@ -208,6 +214,11 @@ bind("XF86Tools", hl.dsp.exec_cmd("fcitx5-remote -c"), "IME をオフ", alwaysIm
 bind("XF86Launch5", hl.dsp.exec_cmd("fcitx5-remote -o"), "IME をオン", alwaysImeBind)
 bind("code:191", hl.dsp.exec_cmd("fcitx5-remote -c"), "IME をオフ（code:191）", alwaysImeBind)
 bind("code:192", hl.dsp.exec_cmd("fcitx5-remote -o"), "IME をオン（code:192）", alwaysImeBind)
+{{- if eq $keyboardType "Mac Japanese" }}
+bind("Hangul_Hanja", hl.dsp.exec_cmd("fcitx5-remote -c"), "IME をオフ（英数）", alwaysImeBind)
+bind("Hangul", hl.dsp.exec_cmd("fcitx5-remote -o"), "IME をオン（かな）", alwaysImeBind)
+{{- end }}
+{{- if not $mac }}
 
 bind("F1", hl.dsp.exec_cmd("brightnessctl -q set 10%-"), "画面を暗くする", { repeating = true })
 bind("F2", hl.dsp.exec_cmd("brightnessctl -q set +10%"), "画面を明るくする", { repeating = true })
@@ -221,6 +232,7 @@ bind("F9", hl.dsp.exec_cmd("playerctl --player=playerctld next"), "次の曲")
 bind("F10", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), "ミュートを切り替え")
 bind("F11", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), "音量を下げる", { repeating = true })
 bind("F12", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), "音量を上げる", { repeating = true })
+{{- end }}
 
 local mediaBindOptions = {
     submap_universal = true,
@@ -241,11 +253,18 @@ bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl --player=playerctld next"), "�
 bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), "ミュートを切り替え", mediaBindOptions)
 bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), "音量を下げる", repeatingMediaBindOptions)
 bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), "音量を上げる", repeatingMediaBindOptions)
+bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl -q set 10%-"), "画面を暗くする", repeatingMediaBindOptions)
+bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl -q set +10%"), "画面を明るくする", repeatingMediaBindOptions)
+{{- if $mac }}
+bind("XF86LaunchB", hl.dsp.exec_cmd(menu), "アプリランチャー")
+{{- end }}
+{{- if not $mac }}
 
 bind("Menu", hl.dsp.submap("function-keys"), "function-keys モードへ切り替え")
 hl.define_submap("function-keys", function()
     bind("Menu", hl.dsp.submap("reset"), "通常モードへ戻る", { release = true, submap_universal = true })
 end)
+{{- end }}
 
 bind(mainMod .. " + slash", hl.dsp.exec_cmd("~/.local/bin/hyprland-cheatsheet"), "キーバインドのチートシート")
 bind(mainMod .. " + RETURN", hl.dsp.exec_cmd(terminal), "ターミナルを開く")
