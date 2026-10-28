@@ -130,6 +130,7 @@ hl.config({
         kb_options = "ctrl:nocaps{{ if not $mac }},altwin:swap_lalt_lwin{{ end }}",
         touchpad = {
             natural_scroll = true,
+            drag_3fg = 1,
         },
     },
     general = {
@@ -401,6 +402,8 @@ end, "次の単語へ移動", { repeating = true })
 
 bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), "ウィンドウをドラッグ", { mouse = true })
 bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), "ウィンドウのサイズを変更", { mouse = true })
+
+hl.gesture({ fingers = 4, direction = "horizontal", action = "workspace" })
 
 for workspace = 1, 9 do
     bind(mainMod .. " + " .. workspace, hl.dsp.focus({ workspace = workspace }), "ワークスペース " .. workspace .. " へ移動")
